@@ -1,6 +1,6 @@
 import { Tabs } from 'expo-router';
 import { Home, Search, Heart, MessageSquare, User } from 'lucide-react-native';
-import { useColorScheme } from 'react-native';
+import { useColorScheme, Platform } from 'react-native';
 import Colors from '@/constants/Colors';
 
 export default function TabLayout() {
@@ -10,9 +10,20 @@ export default function TabLayout() {
     <Tabs
       screenOptions={{
         tabBarActiveTintColor: Colors[colorScheme ?? 'light'].tint,
+        tabBarInactiveTintColor: Colors[colorScheme ?? 'light'].tabIconDefault,
         tabBarStyle: {
           backgroundColor: Colors[colorScheme ?? 'light'].background,
+          borderTopWidth: 1,
+          borderTopColor: Colors[colorScheme ?? 'light'].border,
+          height: Platform.OS === 'android' ? 60 : 80,
+          paddingBottom: Platform.OS === 'android' ? 8 : 20,
+          paddingTop: 8,
         },
+        tabBarLabelStyle: {
+          fontSize: 12,
+          fontFamily: 'Inter-Regular',
+        },
+        headerShown: false,
       }}>
       <Tabs.Screen
         name="index"

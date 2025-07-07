@@ -1,5 +1,7 @@
-import { View, Text, StyleSheet, ScrollView, Pressable, Image } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, Pressable, Platform } from 'react-native';
+import { Image } from 'expo-image';
 import { Link } from 'expo-router';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Settings, Heart, MessageSquare, Home, LogOut } from 'lucide-react-native';
 
 const PROFILE_SECTIONS = [
@@ -30,8 +32,10 @@ const PROFILE_SECTIONS = [
 ];
 
 export default function ProfileScreen() {
+  const insets = useSafeAreaInsets();
+
   return (
-    <ScrollView style={styles.container}>
+    <ScrollView style={[styles.container, { paddingTop: insets.top }]}>
       <View style={styles.header}>
         <View style={styles.profileInfo}>
           <Image
@@ -78,7 +82,6 @@ const styles = StyleSheet.create({
   },
   header: {
     padding: 20,
-    paddingTop: 60,
     backgroundColor: '#fff',
     borderBottomWidth: 1,
     borderBottomColor: '#f4f4f5',

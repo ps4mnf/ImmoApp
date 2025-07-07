@@ -1,7 +1,8 @@
 import { useState } from 'react';
-import { View, Text, StyleSheet, ScrollView, Pressable, useWindowDimensions } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, Pressable, useWindowDimensions, Platform } from 'react-native';
 import { Image } from 'expo-image';
 import { useLocalSearchParams } from 'expo-router';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Heart, Share2, Bed, Bath, Square, MapPin, Phone, MessageSquare } from 'lucide-react-native';
 
 const PROPERTY_DATA = {
@@ -38,9 +39,10 @@ export default function PropertyDetails() {
   const { id } = useLocalSearchParams();
   const [isFavorite, setIsFavorite] = useState(false);
   const { width } = useWindowDimensions();
+  const insets = useSafeAreaInsets();
 
   const property = PROPERTY_DATA;
-  const imageHeight = width * 0.75;
+  const imageHeight = width * 0.6;
 
   const formattedPrice = new Intl.NumberFormat('en-US', {
     style: 'currency',
@@ -63,11 +65,12 @@ export default function PropertyDetails() {
                 source={image}
                 style={[styles.image, { width, height: imageHeight }]}
                 contentFit="cover"
+                placeholder="L6PZfSi_.AyE_3t7t7R**0o#DgR4"
               />
             ))}
           </ScrollView>
           
-          <View style={styles.imageActions}>
+          <View style={[styles.imageActions, { top: insets.top + 10 }]}>
             <Pressable
               style={styles.actionButton}
               onPress={() => setIsFavorite(!isFavorite)}
@@ -141,7 +144,7 @@ export default function PropertyDetails() {
         </View>
       </ScrollView>
 
-      <View style={styles.footer}>
+      <View style={[styles.footer, { paddingBottom: insets.bottom + 20 }]}>
         <Pressable style={styles.messageButton}>
           <MessageSquare size={24} color="#fff" />
           <Text style={styles.messageButtonText}>Message</Text>
@@ -171,7 +174,6 @@ const styles = StyleSheet.create({
   },
   imageActions: {
     position: 'absolute',
-    top: 40,
     right: 20,
     gap: 12,
   },

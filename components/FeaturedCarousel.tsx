@@ -1,5 +1,5 @@
 import { useState, useRef } from 'react';
-import { View, StyleSheet, ScrollView, Dimensions, Pressable } from 'react-native';
+import { View, StyleSheet, ScrollView, Dimensions, Pressable, Platform } from 'react-native';
 import { Image } from 'expo-image';
 import { Link } from 'expo-router';
 import type { Property } from '@/types';
@@ -9,8 +9,8 @@ type FeaturedCarouselProps = {
 };
 
 const { width: WINDOW_WIDTH } = Dimensions.get('window');
-const ITEM_WIDTH = Math.min(WINDOW_WIDTH * 0.8, 400);
-const ITEM_HEIGHT = ITEM_WIDTH * 0.75;
+const ITEM_WIDTH = Math.min(WINDOW_WIDTH * 0.85, 400);
+const ITEM_HEIGHT = ITEM_WIDTH * 0.6;
 
 export default function FeaturedCarousel({ properties }: FeaturedCarouselProps) {
   const [activeIndex, setActiveIndex] = useState(0);
@@ -18,7 +18,7 @@ export default function FeaturedCarousel({ properties }: FeaturedCarouselProps) 
 
   const handleScroll = (event: any) => {
     const scrollPosition = event.nativeEvent.contentOffset.x;
-    const index = Math.round(scrollPosition / ITEM_WIDTH);
+    const index = Math.round(scrollPosition / (ITEM_WIDTH + 16));
     setActiveIndex(index);
   };
 
@@ -27,11 +27,13 @@ export default function FeaturedCarousel({ properties }: FeaturedCarouselProps) 
       <ScrollView
         ref={scrollViewRef}
         horizontal
-        pagingEnabled
+        pagingEnabled={false}
         showsHorizontalScrollIndicator={false}
         onScroll={handleScroll}
         scrollEventThrottle={16}
         decelerationRate="fast"
+        snapToInterval={ITEM_WIDTH + 16}
+        snapToAlignment="start"
         contentContainerStyle={styles.scrollContent}
       >
         {properties.map((property) => (
@@ -42,6 +44,7 @@ export default function FeaturedCarousel({ properties }: FeaturedCarouselProps) 
                 style={[styles.image, { height: ITEM_HEIGHT }]}
                 contentFit="cover"
                 transition={200}
+                placeholder="L6PZfSi_.AyE_3t7t7R**0o#DgR4"
               />
             </Pressable>
           </Link>
@@ -74,6 +77,14 @@ const styles = StyleSheet.create({
   item: {
     borderRadius: 12,
     overflow: 'hidden',
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.1,
+    shadowRadius: 3.84,
+    elevation: 5,
   },
   image: {
     width: '100%',

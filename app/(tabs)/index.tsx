@@ -1,5 +1,7 @@
-import { View, Text, StyleSheet, ScrollView, Dimensions } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, Platform, RefreshControl } from 'react-native';
+import { useState, useCallback } from 'react';
 import { Image } from 'expo-image';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import FeaturedCarousel from '@/components/FeaturedCarousel';
 import PropertyCard from '@/components/PropertyCard';
 
@@ -13,7 +15,7 @@ const FEATURED_PROPERTIES = [
     bedrooms: 4,
     bathrooms: 3,
     area: 3500,
-    type: 'sale',
+    type: 'sale' as const,
     isPremiumListing: true,
   },
   {
@@ -25,7 +27,7 @@ const FEATURED_PROPERTIES = [
     bedrooms: 2,
     bathrooms: 2,
     area: 1200,
-    type: 'rent',
+    type: 'rent' as const,
     isPremiumListing: true,
   },
 ];
@@ -40,7 +42,7 @@ const RECENT_PROPERTIES = [
     bedrooms: 3,
     bathrooms: 2,
     area: 2200,
-    type: 'sale',
+    type: 'sale' as const,
     isPremiumListing: false,
   },
   {
@@ -52,14 +54,30 @@ const RECENT_PROPERTIES = [
     bedrooms: 1,
     bathrooms: 1,
     area: 800,
-    type: 'rent',
+    type: 'rent' as const,
     isPremiumListing: false,
   },
 ];
 
 export default function HomeScreen() {
+  const insets = useSafeAreaInsets();
+  const [refreshing, setRefreshing] = useState(false);
+
+  const onRefresh = useCallback(() => {
+    setRefreshing(true);
+    // Simulate API call
+    setTimeout(() => {
+      setRefreshing(false);
+    }, 2000);
+  }, []);
+
   return (
-    <ScrollView style={styles.container}>
+    <ScrollView 
+      style={[styles.container, { paddingTop: insets.top }]}
+      refreshControl={
+        <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+      }
+    >
       <View style={styles.header}>
         <Text style={styles.title}>Featured Properties</Text>
         <Text style={styles.subtitle}>Discover our premium listings</Text>
@@ -109,8 +127,6 @@ const styles = StyleSheet.create({
     marginBottom: 16,
   },
   propertiesGrid: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
     gap: 16,
   },
 });

@@ -1,5 +1,7 @@
 import { useState } from 'react';
-import { View, Text, StyleSheet, ScrollView, TextInput, Pressable, Image } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, TextInput, Pressable, Platform } from 'react-native';
+import { Image } from 'expo-image';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Search, MessageSquare } from 'lucide-react-native';
 
 const SAMPLE_MESSAGES = [
@@ -22,10 +24,11 @@ const SAMPLE_MESSAGES = [
 ];
 
 export default function MessagesScreen() {
+  const insets = useSafeAreaInsets();
   const [searchQuery, setSearchQuery] = useState('');
 
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, { paddingTop: insets.top }]}>
       <View style={styles.header}>
         <Text style={styles.title}>Messages</Text>
         <Text style={styles.subtitle}>Chat with property owners and agents</Text>
@@ -39,6 +42,7 @@ export default function MessagesScreen() {
             placeholder="Search messages"
             value={searchQuery}
             onChangeText={setSearchQuery}
+            placeholderTextColor="#999"
           />
         </View>
       </View>
@@ -85,7 +89,6 @@ const styles = StyleSheet.create({
   },
   header: {
     padding: 20,
-    paddingTop: 60,
     backgroundColor: '#fff',
   },
   title: {
@@ -115,6 +118,7 @@ const styles = StyleSheet.create({
     flex: 1,
     fontSize: 16,
     fontFamily: 'Inter-Regular',
+    color: '#1a1a1a',
   },
   messagesList: {
     flex: 1,

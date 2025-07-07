@@ -25,6 +25,7 @@ export default function PropertyCard({ property }: PropertyCardProps) {
             style={styles.image}
             contentFit="cover"
             transition={200}
+            placeholder="L6PZfSi_.AyE_3t7t7R**0o#DgR4"
           />
           {property.isPremiumListing && (
             <View style={styles.badgeContainer}>
@@ -71,16 +72,16 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     borderRadius: 12,
     overflow: 'hidden',
-    ...Platform.select({
-      web: {
-        width: 'calc(50% - 8px)',
-      },
-      default: {
-        width: '100%',
-      },
-    }),
     borderWidth: 1,
     borderColor: '#eee',
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.1,
+    shadowRadius: 3.84,
+    elevation: 5,
   },
   imageContainer: {
     position: 'relative',

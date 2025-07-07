@@ -1,5 +1,6 @@
 import { useState } from 'react';
-import { View, Text, TextInput, ScrollView, StyleSheet, Pressable } from 'react-native';
+import { View, Text, TextInput, ScrollView, StyleSheet, Pressable, Platform } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Search as SearchIcon, SlidersHorizontal, MapPin } from 'lucide-react-native';
 import PropertyCard from '@/components/PropertyCard';
 
@@ -13,7 +14,7 @@ const SAMPLE_PROPERTIES = [
     bedrooms: 2,
     bathrooms: 2,
     area: 1200,
-    type: 'sale',
+    type: 'sale' as const,
     isPremiumListing: true,
   },
   {
@@ -25,17 +26,18 @@ const SAMPLE_PROPERTIES = [
     bedrooms: 4,
     bathrooms: 3,
     area: 2800,
-    type: 'rent',
+    type: 'rent' as const,
     isPremiumListing: true,
   },
 ];
 
 export default function SearchScreen() {
+  const insets = useSafeAreaInsets();
   const [searchQuery, setSearchQuery] = useState('');
   const [location, setLocation] = useState('');
 
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, { paddingTop: insets.top }]}>
       <View style={styles.header}>
         <Text style={styles.title}>Find Your Dream Home</Text>
         <Text style={styles.subtitle}>Search properties for sale and rent</Text>
@@ -49,6 +51,7 @@ export default function SearchScreen() {
             placeholder="Search by property name"
             value={searchQuery}
             onChangeText={setSearchQuery}
+            placeholderTextColor="#999"
           />
         </View>
 
@@ -59,6 +62,7 @@ export default function SearchScreen() {
             placeholder="Location"
             value={location}
             onChangeText={setLocation}
+            placeholderTextColor="#999"
           />
         </View>
 
@@ -84,7 +88,6 @@ const styles = StyleSheet.create({
   },
   header: {
     padding: 20,
-    paddingTop: 40,
     backgroundColor: '#fff',
   },
   title: {
@@ -122,6 +125,7 @@ const styles = StyleSheet.create({
     flex: 1,
     fontSize: 16,
     fontFamily: 'Inter-Regular',
+    color: '#1a1a1a',
   },
   filtersButton: {
     flexDirection: 'row',

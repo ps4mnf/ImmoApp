@@ -10,7 +10,7 @@ export type User = {
 export type Property = {
   id: string;
   title: string;
-  description: string;
+  description?: string;
   price: number;
   type: 'sale' | 'rent';
   bedrooms: number;
@@ -18,10 +18,10 @@ export type Property = {
   area: number;
   location: string;
   images: string[];
-  features: string[];
-  agentId: string;
+  features?: string[];
+  agentId?: string;
   isPremiumListing: boolean;
-  createdAt: string;
+  createdAt?: string;
 };
 
 export type Message = {

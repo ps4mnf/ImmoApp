@@ -1,4 +1,5 @@
-import { View, Text, StyleSheet, ScrollView } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, Platform } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Heart } from 'lucide-react-native';
 import PropertyCard from '@/components/PropertyCard';
 
@@ -12,7 +13,7 @@ const FAVORITE_PROPERTIES = [
     bedrooms: 3,
     bathrooms: 3.5,
     area: 2800,
-    type: 'sale',
+    type: 'sale' as const,
     isPremiumListing: true,
   },
   {
@@ -24,14 +25,16 @@ const FAVORITE_PROPERTIES = [
     bedrooms: 2,
     bathrooms: 2,
     area: 1500,
-    type: 'rent',
+    type: 'rent' as const,
     isPremiumListing: false,
   },
 ];
 
 export default function FavoritesScreen() {
+  const insets = useSafeAreaInsets();
+
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, { paddingTop: insets.top }]}>
       <View style={styles.header}>
         <Text style={styles.title}>Favorites</Text>
         <Text style={styles.subtitle}>Your saved properties</Text>
@@ -66,7 +69,6 @@ const styles = StyleSheet.create({
   },
   header: {
     padding: 20,
-    paddingTop: 60,
     backgroundColor: '#fff',
   },
   title: {
