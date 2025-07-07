@@ -1,36 +1,10 @@
 import { View, Text, StyleSheet, ScrollView, Platform, RefreshControl } from 'react-native';
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useEffect } from 'react';
 import { Image } from 'expo-image';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import FeaturedCarousel from '@/components/FeaturedCarousel';
 import PropertyCard from '@/components/PropertyCard';
-
-const FEATURED_PROPERTIES = [
-  {
-    id: '1',
-    title: 'Luxury Villa with Ocean View',
-    price: 1200000,
-    location: 'Miami Beach, FL',
-    images: ['https://images.pexels.com/photos/1396122/pexels-photo-1396122.jpeg'],
-    bedrooms: 4,
-    bathrooms: 3,
-    area: 3500,
-    type: 'sale' as const,
-    isPremiumListing: true,
-  },
-  {
-    id: '2',
-    title: 'Modern Downtown Apartment',
-    price: 2500,
-    location: 'New York, NY',
-    images: ['https://images.pexels.com/photos/1571460/pexels-photo-1571460.jpeg'],
-    bedrooms: 2,
-    bathrooms: 2,
-    area: 1200,
-    type: 'rent' as const,
-    isPremiumListing: true,
-  },
-];
+import { getFeaturedProperties } from '@/services/owners';
 
 const RECENT_PROPERTIES = [
   {
@@ -62,13 +36,70 @@ const RECENT_PROPERTIES = [
 export default function HomeScreen() {
   const insets = useSafeAreaInsets();
   const [refreshing, setRefreshing] = useState(false);
+  const [featuredProperties, setFeaturedProperties] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    fetchFeaturedProperties();
+  }, []);
+
+  const fetchFeaturedProperties = async () => {
+    try {
+      setLoading(true);
+      const featured = await getFeaturedProperties('homepage_hero');
+      // Transform the data to match our Property type
+      const transformedProperties = featured.map(fp => ({
+        id: fp.properties.id,
+        title: fp.properties.title,
+        price: fp.properties.price,
+        location: fp.properties.location,
+        images: fp.properties.images,
+        bedrooms: fp.properties.bedrooms,
+        bathrooms: fp.properties.bathrooms,
+        area: fp.properties.area,
+        type: fp.properties.type,
+        isPremiumListing: true, // Featured properties are premium by default
+      }));
+      setFeaturedProperties(transformedProperties);
+    } catch (error) {
+      console.error('Failed to fetch featured properties:', error);
+      // Fallback to default properties
+      setFeaturedProperties([
+        {
+          id: '1',
+          title: 'Luxury Villa with Ocean View',
+          price: 1200000,
+          location: 'Miami Beach, FL',
+          images: ['https://images.pexels.com/photos/1396122/pexels-photo-1396122.jpeg'],
+          bedrooms: 4,
+          bathrooms: 3,
+          area: 3500,
+          type: 'sale' as const,
+          isPremiumListing: true,
+        },
+        {
+          id: '2',
+          title: 'Modern Downtown Apartment',
+          price: 2500,
+          location: 'New York, NY',
+          images: ['https://images.pexels.com/photos/1571460/pexels-photo-1571460.jpeg'],
+          bedrooms: 2,
+          bathrooms: 2,
+          area: 1200,
+          type: 'rent' as const,
+          isPremiumListing: true,
+        },
+      ]);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const onRefresh = useCallback(() => {
     setRefreshing(true);
-    // Simulate API call
-    setTimeout(() => {
+    fetchFeaturedProperties().finally(() => {
       setRefreshing(false);
-    }, 2000);
+    });
   }, []);
 
   return (
@@ -83,7 +114,9 @@ export default function HomeScreen() {
         <Text style={styles.subtitle}>Discover our premium listings</Text>
       </View>
 
-      <FeaturedCarousel properties={FEATURED_PROPERTIES} />
+      {!loading && featuredProperties.length > 0 && (
+        <FeaturedCarousel properties={featuredProperties} />
+      )}
 
       <View style={styles.section}>
         <Text style={styles.sectionTitle}>Recent Listings</Text>
