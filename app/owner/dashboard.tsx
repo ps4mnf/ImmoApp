@@ -14,14 +14,15 @@ import {
   Crown,
   BarChart3
 } from 'lucide-react-native';
-import { useOwnerProfile } from '@/hooks/useOwnerProfile';
-import { useAuth } from '@/hooks/useAuth';
+import { useOwnerProfile } from '@/hooks/useLocalOwnerProfile';
+import { useAuth } from '@/hooks/useLocalAuth';
+import { getPropertiesByAgent } from '@/services/localProperties';
 
 const DASHBOARD_STATS = [
   {
     title: 'Total Properties',
-    value: '12',
-    change: '+2 this month',
+    value: '0',
+    change: '+0 this month',
     icon: Home,
     color: '#2563eb',
   },
@@ -83,6 +84,26 @@ export default function OwnerDashboard() {
   const insets = useSafeAreaInsets();
   const { user } = useAuth();
   const { profile, loading, error } = useOwnerProfile();
+  const [propertyCount, setPropertyCount] = useState(0);
+
+  useEffect(() => {
+    if (user) {
+      fetchPropertyCount();
+    }
+  }, [user]);
+
+  const fetchPropertyCount = async () => {
+    try {
+      if (user) {
+        const properties = await getPropertiesByAgent(user.id);
+        setPropertyCount(properties.length);
+        // Update the stats
+        DASHBOARD_STATS[0].value = properties.length.toString();
+      }
+    } catch (error) {
+      console.error('Failed to fetch property count:', error);
+    }
+  };
 
   if (loading) {
     return (
@@ -111,13 +132,13 @@ export default function OwnerDashboard() {
       <View style={styles.header}>
         <View style={styles.welcomeSection}>
           <Image
-            source={profile?.businessLogo || user?.user_metadata?.avatar_url || 'https://images.pexels.com/photos/614810/pexels-photo-614810.jpeg'}
+            source={profile?.businessLogo || user?.avatar_url || 'https://images.pexels.com/photos/614810/pexels-photo-614810.jpeg'}
             style={styles.avatar}
             placeholder="L6PZfSi_.AyE_3t7t7R**0o#DgR4"
           />
           <View style={styles.welcomeText}>
             <Text style={styles.welcomeTitle}>
-              Welcome back, {profile?.businessName || user?.user_metadata?.full_name || 'Owner'}!
+              Welcome back, {profile?.businessName || user?.full_name || 'Owner'}!
             </Text>
             <Text style={styles.welcomeSubtitle}>
               {profile?.subscriptionTier === 'premium' ? '⭐ Premium Member' : 'Basic Member'}
@@ -135,7 +156,9 @@ export default function OwnerDashboard() {
               <View style={[styles.statIcon, { backgroundColor: `${stat.color}20` }]}>
                 <stat.icon size={24} color={stat.color} />
               </View>
-              <Text style={styles.statValue}>{stat.value}</Text>
+              <Text style={styles.statValue}>
+                {index === 0 ? propertyCount : stat.value}
+              </Text>
               <Text style={styles.statTitle}>{stat.title}</Text>
               <Text style={styles.statChange}>{stat.change}</Text>
             </View>

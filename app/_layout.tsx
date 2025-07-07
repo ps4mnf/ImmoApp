@@ -5,6 +5,7 @@ import { Platform } from 'react-native';
 import { useFrameworkReady } from '@/hooks/useFrameworkReady';
 import { useFonts, Inter_400Regular, Inter_600SemiBold, Inter_700Bold } from '@expo-google-fonts/inter';
 import * as SplashScreen from 'expo-splash-screen';
+import { initializeDatabase } from '@/services/database';
 
 // Prevent the splash screen from auto-hiding before asset loading is complete
 SplashScreen.preventAutoHideAsync();
@@ -17,6 +18,11 @@ export default function RootLayout() {
     'Inter-SemiBold': Inter_600SemiBold,
     'Inter-Bold': Inter_700Bold,
   });
+
+  useEffect(() => {
+    // Initialize database
+    initializeDatabase().catch(console.error);
+  }, []);
 
   useEffect(() => {
     if (fontsLoaded || fontError) {
@@ -38,7 +44,7 @@ export default function RootLayout() {
           title: 'Property Details',
           headerBackTitle: 'Back'
         }} />
-        <Stack.Screen name="agent" options={{ headerShown: false }} />
+        <Stack.Screen name="owner" options={{ headerShown: false }} />
         <Stack.Screen name="+not-found" />
       </Stack>
       <StatusBar style={Platform.OS === 'ios' ? 'auto' : 'dark'} />

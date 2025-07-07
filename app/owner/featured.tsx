@@ -3,8 +3,8 @@ import { useState, useEffect } from 'react';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Image } from 'expo-image';
 import { Crown, Star, TrendingUp, Calendar, DollarSign } from 'lucide-react-native';
-import { getFeaturedProperties, createFeaturedProperty } from '@/services/owners';
-import { useAuth } from '@/hooks/useAuth';
+import { getFeaturedProperties, createFeaturedProperty } from '@/services/localOwners';
+import { useAuth } from '@/hooks/useLocalAuth';
 import type { FeaturedProperty } from '@/types/owner';
 
 const FEATURE_PACKAGES = [
@@ -89,6 +89,7 @@ export default function FeaturedProperties() {
         propertyId,
         ownerId: user.id,
         featureType: packageType as any,
+        startDate: new Date().toISOString(),
         endDate: endDate.toISOString(),
         priority: packageType === 'homepage_hero' ? 3 : packageType === 'premium_listing' ? 2 : 1,
         paymentAmount: selectedPackage.price,
