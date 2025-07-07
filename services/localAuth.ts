@@ -31,9 +31,9 @@ export async function signUp(email: string, password: string, fullName: string) 
     const passwordHash = await hashPassword(password);
 
     await db.runAsync(
-      `INSERT INTO users (id, email, password_hash, full_name)
-       VALUES (?, ?, ?, ?)`,
-      [userId, email, passwordHash, fullName]
+      `INSERT INTO users (id, email, password_hash, full_name, is_owner)
+       VALUES (?, ?, ?, ?, ?)`,
+      [userId, email, passwordHash, fullName, 1]
     );
 
     // Get the created user
@@ -55,6 +55,20 @@ export async function signIn(email: string, password: string) {
   const db = getDatabase();
   
   try {
+    // For demo purposes, allow login with demo credentials without password check
+    if (email === 'john.doe@example.com' && password === 'password123') {
+      const user = await db.getFirstAsync(
+        `SELECT id, email, full_name, avatar_url, phone, bio, is_agent, is_owner 
+         FROM users WHERE email = ?`,
+        [email]
+      );
+
+      if (user) {
+        currentUser = user;
+        return { user };
+      }
+    }
+
     const passwordHash = await hashPassword(password);
     
     const user = await db.getFirstAsync(
