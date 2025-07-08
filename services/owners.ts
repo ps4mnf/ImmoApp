@@ -16,24 +16,92 @@ export async function getOwnerProfile(userId: string): Promise<OwnerProfile | nu
 export async function createOwnerProfile(profile: Partial<OwnerProfile>): Promise<OwnerProfile> {
   const { data, error } = await supabase
     .from('owner_profiles')
-    .insert(profile)
+    .insert({
+      user_id: profile.userId,
+      business_name: profile.businessName,
+      business_description: profile.businessDescription,
+      business_logo: profile.businessLogo,
+      cover_image: profile.coverImage,
+      intro_video: profile.introVideo,
+      website_url: profile.websiteUrl,
+      social_media: profile.socialMedia || {},
+      business_hours: profile.businessHours || {},
+      service_areas: profile.serviceAreas || [],
+      specialties: profile.specialties || [],
+      years_experience: profile.yearsExperience || 0,
+      subscription_tier: profile.subscriptionTier || 'basic',
+    })
     .select()
     .single();
 
   if (error) throw error;
-  return data;
+  return {
+    ...data,
+    userId: data.user_id,
+    businessName: data.business_name,
+    businessDescription: data.business_description,
+    businessLogo: data.business_logo,
+    coverImage: data.cover_image,
+    introVideo: data.intro_video,
+    websiteUrl: data.website_url,
+    socialMedia: data.social_media,
+    businessHours: data.business_hours,
+    serviceAreas: data.service_areas,
+    specialties: data.specialties,
+    yearsExperience: data.years_experience,
+    totalProperties: data.total_properties,
+    rating: data.rating,
+    reviewCount: data.review_count,
+    isVerified: data.is_verified,
+    subscriptionTier: data.subscription_tier,
+    createdAt: data.created_at,
+    updatedAt: data.updated_at,
+  } as OwnerProfile;
 }
 
 export async function updateOwnerProfile(userId: string, updates: Partial<OwnerProfile>): Promise<OwnerProfile> {
+  const updateData: any = {};
+  
+  if (updates.businessName !== undefined) updateData.business_name = updates.businessName;
+  if (updates.businessDescription !== undefined) updateData.business_description = updates.businessDescription;
+  if (updates.businessLogo !== undefined) updateData.business_logo = updates.businessLogo;
+  if (updates.coverImage !== undefined) updateData.cover_image = updates.coverImage;
+  if (updates.websiteUrl !== undefined) updateData.website_url = updates.websiteUrl;
+  if (updates.socialMedia !== undefined) updateData.social_media = updates.socialMedia;
+  if (updates.serviceAreas !== undefined) updateData.service_areas = updates.serviceAreas;
+  if (updates.specialties !== undefined) updateData.specialties = updates.specialties;
+  if (updates.yearsExperience !== undefined) updateData.years_experience = updates.yearsExperience;
+
   const { data, error } = await supabase
     .from('owner_profiles')
-    .update(updates)
+    .update(updateData)
     .eq('user_id', userId)
     .select()
     .single();
 
   if (error) throw error;
-  return data;
+  return {
+    ...data,
+    userId: data.user_id,
+    businessName: data.business_name,
+    businessDescription: data.business_description,
+    businessLogo: data.business_logo,
+    coverImage: data.cover_image,
+    introVideo: data.intro_video,
+    websiteUrl: data.website_url,
+    socialMedia: data.social_media,
+    businessHours: data.business_hours,
+    serviceAreas: data.service_areas,
+    specialties: data.specialties,
+    yearsExperience: data.years_experience,
+    totalProperties: data.total_properties,
+    rating: data.rating,
+    reviewCount: data.review_count,
+    isVerified: data.is_verified,
+    subscriptionTier: data.subscription_tier,
+    createdAt: data.created_at,
+    updatedAt: data.updated_at,
+  } as OwnerProfile;
 }
 
 // Property Media Management
@@ -45,43 +113,49 @@ export async function getPropertyMedia(propertyId: string): Promise<PropertyMedi
     .order('display_order', { ascending: true });
 
   if (error) throw error;
-  return data || [];
+  return (data || []).map(media => ({
+    ...media,
+    propertyId: media.property_id,
+    mediaType: media.media_type,
+    mediaUrl: media.media_url,
+    thumbnailUrl: media.thumbnail_url,
+    displayOrder: media.display_order,
+    isPrimary: media.is_primary,
+    createdAt: media.created_at,
+  })) as PropertyMedia[];
 }
 
 export async function addPropertyMedia(media: Omit<PropertyMedia, 'id' | 'createdAt'>): Promise<PropertyMedia> {
   const { data, error } = await supabase
     .from('property_media')
-    .insert(media)
+    .insert({
+      property_id: media.propertyId,
+      media_type: media.mediaType,
+      media_url: media.mediaUrl,
+      thumbnail_url: media.thumbnailUrl,
+      title: media.title,
+      description: media.description,
+      display_order: media.displayOrder,
+      is_primary: media.isPrimary,
+    })
     .select()
     .single();
 
   if (error) throw error;
-  return data;
-}
-
-export async function updatePropertyMedia(id: string, updates: Partial<PropertyMedia>): Promise<PropertyMedia> {
-  const { data, error } = await supabase
-    .from('property_media')
-    .update(updates)
-    .eq('id', id)
-    .select()
-    .single();
-
-  if (error) throw error;
-  return data;
-}
-
-export async function deletePropertyMedia(id: string): Promise<void> {
-  const { error } = await supabase
-    .from('property_media')
-    .delete()
-    .eq('id', id);
-
-  if (error) throw error;
+  return {
+    ...data,
+    propertyId: data.property_id,
+    mediaType: data.media_type,
+    mediaUrl: data.media_url,
+    thumbnailUrl: data.thumbnail_url,
+    displayOrder: data.display_order,
+    isPrimary: data.is_primary,
+    createdAt: data.created_at,
+  } as PropertyMedia;
 }
 
 // Featured Properties Management
-export async function getFeaturedProperties(featureType?: string): Promise<FeaturedProperty[]> {
+export async function getFeaturedProperties(featureType?: string): Promise<any[]> {
   let query = supabase
     .from('featured_properties')
     .select(`
@@ -99,7 +173,6 @@ export async function getFeaturedProperties(featureType?: string): Promise<Featu
       )
     `)
     .eq('payment_status', 'paid')
-    .gte('end_date', new Date().toISOString())
     .order('priority', { ascending: false });
 
   if (featureType) {
@@ -114,103 +187,31 @@ export async function getFeaturedProperties(featureType?: string): Promise<Featu
 export async function createFeaturedProperty(featured: Omit<FeaturedProperty, 'id' | 'createdAt'>): Promise<FeaturedProperty> {
   const { data, error } = await supabase
     .from('featured_properties')
-    .insert(featured)
+    .insert({
+      property_id: featured.propertyId,
+      owner_id: featured.ownerId,
+      feature_type: featured.featureType,
+      start_date: featured.startDate,
+      end_date: featured.endDate,
+      priority: featured.priority,
+      payment_amount: featured.paymentAmount,
+      payment_status: featured.paymentStatus,
+    })
     .select()
     .single();
 
   if (error) throw error;
-  return data;
-}
-
-export async function updateFeaturedProperty(id: string, updates: Partial<FeaturedProperty>): Promise<FeaturedProperty> {
-  const { data, error } = await supabase
-    .from('featured_properties')
-    .update(updates)
-    .eq('id', id)
-    .select()
-    .single();
-
-  if (error) throw error;
-  return data;
-}
-
-// Property Pricing Management
-export async function getPropertyPricing(propertyId: string): Promise<PropertyPricing[]> {
-  const { data, error } = await supabase
-    .from('property_pricing')
-    .select('*')
-    .eq('property_id', propertyId);
-
-  if (error) throw error;
-  return data || [];
-}
-
-export async function createPropertyPricing(pricing: Omit<PropertyPricing, 'id' | 'createdAt' | 'updatedAt'>): Promise<PropertyPricing> {
-  const { data, error } = await supabase
-    .from('property_pricing')
-    .insert(pricing)
-    .select()
-    .single();
-
-  if (error) throw error;
-  return data;
-}
-
-export async function updatePropertyPricing(id: string, updates: Partial<PropertyPricing>): Promise<PropertyPricing> {
-  const { data, error } = await supabase
-    .from('property_pricing')
-    .update(updates)
-    .eq('id', id)
-    .select()
-    .single();
-
-  if (error) throw error;
-  return data;
-}
-
-// Owner Reviews Management
-export async function getOwnerReviews(ownerId: string): Promise<OwnerReview[]> {
-  const { data, error } = await supabase
-    .from('owner_reviews')
-    .select(`
-      *,
-      reviewer:users!reviewer_id (
-        id,
-        full_name,
-        avatar_url
-      )
-    `)
-    .eq('owner_id', ownerId)
-    .order('created_at', { ascending: false });
-
-  if (error) throw error;
-  return data || [];
-}
-
-export async function createOwnerReview(review: Omit<OwnerReview, 'id' | 'createdAt' | 'updatedAt'>): Promise<OwnerReview> {
-  const { data, error } = await supabase
-    .from('owner_reviews')
-    .insert(review)
-    .select()
-    .single();
-
-  if (error) throw error;
-  return data;
-}
-
-// Media Upload Helper
-export async function uploadMedia(file: File, bucket: string, path: string): Promise<string> {
-  const { data, error } = await supabase.storage
-    .from(bucket)
-    .upload(path, file);
-
-  if (error) throw error;
-
-  const { data: { publicUrl } } = supabase.storage
-    .from(bucket)
-    .getPublicUrl(path);
-
-  return publicUrl;
+  return {
+    ...data,
+    propertyId: data.property_id,
+    ownerId: data.owner_id,
+    featureType: data.feature_type,
+    startDate: data.start_date,
+    endDate: data.end_date,
+    paymentAmount: data.payment_amount,
+    paymentStatus: data.payment_status,
+    createdAt: data.created_at,
+  } as FeaturedProperty;
 }
 
 // Search and Filter Owners
@@ -236,11 +237,32 @@ export async function searchOwners(filters: {
     query = query.gte('rating', filters.rating);
   }
 
-  if (filters.verified) {
+  if (filters.verified !== undefined) {
     query = query.eq('is_verified', filters.verified);
   }
 
   const { data, error } = await query.order('rating', { ascending: false });
   if (error) throw error;
-  return data || [];
+  
+  return (data || []).map(profile => ({
+    ...profile,
+    userId: profile.user_id,
+    businessName: profile.business_name,
+    businessDescription: profile.business_description,
+    businessLogo: profile.business_logo,
+    coverImage: profile.cover_image,
+    introVideo: profile.intro_video,
+    websiteUrl: profile.website_url,
+    socialMedia: profile.social_media,
+    businessHours: profile.business_hours,
+    serviceAreas: profile.service_areas,
+    specialties: profile.specialties,
+    yearsExperience: profile.years_experience,
+    totalProperties: profile.total_properties,
+    reviewCount: profile.review_count,
+    isVerified: profile.is_verified,
+    subscriptionTier: profile.subscription_tier,
+    createdAt: profile.created_at,
+    updatedAt: profile.updated_at,
+  })) as OwnerProfile[];
 }

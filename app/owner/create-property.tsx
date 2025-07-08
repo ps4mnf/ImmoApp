@@ -3,8 +3,8 @@ import { useState } from 'react';
 import { router } from 'expo-router';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Home, DollarSign, MapPin, Bed, Bath, Square, Save } from 'lucide-react-native';
-import { useAuth } from '@/hooks/useLocalAuth';
-import { createProperty } from '@/services/localProperties';
+import { useAuth } from '@/hooks/useAuth';
+import { createProperty } from '@/services/properties';
 import MediaUploader from '@/components/MediaUploader';
 import type { PropertyMedia } from '@/types/owner';
 

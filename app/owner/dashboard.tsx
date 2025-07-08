@@ -14,9 +14,9 @@ import {
   Crown,
   BarChart3
 } from 'lucide-react-native';
-import { useOwnerProfile } from '@/hooks/useLocalOwnerProfile';
-import { useAuth } from '@/hooks/useLocalAuth';
-import { getPropertiesByAgent } from '@/services/localProperties';
+import { useOwnerProfile } from '@/hooks/useOwnerProfile';
+import { useAuth } from '@/hooks/useAuth';
+import { getPropertiesByAgent } from '@/services/properties';
 
 const DASHBOARD_STATS = [
   {
@@ -132,13 +132,13 @@ export default function OwnerDashboard() {
       <View style={styles.header}>
         <View style={styles.welcomeSection}>
           <Image
-            source={profile?.businessLogo || user?.avatar_url || 'https://images.pexels.com/photos/614810/pexels-photo-614810.jpeg'}
+            source={profile?.businessLogo || user?.user_metadata?.avatar_url || 'https://images.pexels.com/photos/614810/pexels-photo-614810.jpeg'}
             style={styles.avatar}
             placeholder="L6PZfSi_.AyE_3t7t7R**0o#DgR4"
           />
           <View style={styles.welcomeText}>
             <Text style={styles.welcomeTitle}>
-              Welcome back, {profile?.businessName || user?.full_name || 'Owner'}!
+              Welcome back, {profile?.businessName || user?.user_metadata?.full_name || 'Owner'}!
             </Text>
             <Text style={styles.welcomeSubtitle}>
               {profile?.subscriptionTier === 'premium' ? '⭐ Premium Member' : 'Basic Member'}

@@ -3,11 +3,11 @@ import { useState } from 'react';
 import { Link, router } from 'expo-router';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Mail, Lock, Eye, EyeOff } from 'lucide-react-native';
-import { useAuth } from '@/hooks/useLocalAuth';
+import { useAuth } from '@/hooks/useAuth';
 
 export default function LoginScreen() {
   const insets = useSafeAreaInsets();
-  const { login } = useAuth();
+  const { signIn } = useAuth();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
@@ -21,7 +21,7 @@ export default function LoginScreen() {
 
     try {
       setLoading(true);
-      await login(email, password);
+      await signIn(email, password);
       router.replace('/(tabs)');
     } catch (error) {
       Alert.alert('Login Failed', error instanceof Error ? error.message : 'Invalid credentials');
@@ -30,17 +30,6 @@ export default function LoginScreen() {
     }
   };
 
-  const handleDemoLogin = async () => {
-    try {
-      setLoading(true);
-      await login('john.doe@example.com', 'password123');
-      router.replace('/(tabs)');
-    } catch (error) {
-      Alert.alert('Demo Login Failed', 'Please try again');
-    } finally {
-      setLoading(false);
-    }
-  };
 
   return (
     <View style={[styles.container, { paddingTop: insets.top }]}>
@@ -98,13 +87,6 @@ export default function LoginScreen() {
           </Text>
         </Pressable>
 
-        <Pressable
-          style={styles.demoButton}
-          onPress={handleDemoLogin}
-          disabled={loading}
-        >
-          <Text style={styles.demoButtonText}>Try Demo Account</Text>
-        </Pressable>
 
         <View style={styles.footer}>
           <Text style={styles.footerText}>Don't have an account? </Text>

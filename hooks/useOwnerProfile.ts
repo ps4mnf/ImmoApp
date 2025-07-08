@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { getOwnerProfile, updateOwnerProfile } from '@/services/owners';
+import { getOwnerProfile, updateOwnerProfile, createOwnerProfile } from '@/services/owners';
 import { useAuth } from './useAuth';
 import type { OwnerProfile } from '@/types/owner';
 
@@ -12,6 +12,8 @@ export function useOwnerProfile() {
   useEffect(() => {
     if (user) {
       fetchProfile();
+    } else {
+      setLoading(false);
     }
   }, [user]);
 
@@ -20,7 +22,18 @@ export function useOwnerProfile() {
     
     try {
       setLoading(true);
-      const data = await getOwnerProfile(user.id);
+      setError(null);
+      let data = await getOwnerProfile(user.id);
+      
+      // Create profile if it doesn't exist
+      if (!data) {
+        data = await createOwnerProfile({
+          userId: user.id,
+          businessName: user.user_metadata?.full_name + ' Real Estate' || 'Real Estate Business',
+          subscriptionTier: 'basic',
+        });
+      }
+      
       setProfile(data);
     } catch (err) {
       setError(err instanceof Error ? err : new Error('Failed to fetch profile'));

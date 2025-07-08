@@ -4,8 +4,8 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Image } from 'expo-image';
 import * as ImagePicker from 'expo-image-picker';
 import { Camera, Upload, Save, MapPin, Globe, Clock } from 'lucide-react-native';
-import { useOwnerProfile } from '@/hooks/useLocalOwnerProfile';
-import { useAuth } from '@/hooks/useLocalAuth';
+import { useOwnerProfile } from '@/hooks/useOwnerProfile';
+import { useAuth } from '@/hooks/useAuth';
 
 const BUSINESS_HOURS = [
   'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'
@@ -59,7 +59,7 @@ export default function OwnerProfileEdit() {
         coverImage: profile.coverImage || '',
         websiteUrl: profile.websiteUrl || '',
         phone: user?.phone || '',
-        bio: user?.bio || '',
+        bio: user?.user_metadata?.bio || '',
         serviceAreas: profile.serviceAreas || [],
         specialties: profile.specialties || [],
         yearsExperience: profile.yearsExperience || 0,

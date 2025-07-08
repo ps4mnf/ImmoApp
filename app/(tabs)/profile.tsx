@@ -3,8 +3,8 @@ import { Image } from 'expo-image';
 import { Link } from 'expo-router';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Settings, Heart, MessageSquare, Home, LogOut, Crown, BarChart3 } from 'lucide-react-native';
-import { useAuth } from '@/hooks/useLocalAuth';
-import { useOwnerProfile } from '@/hooks/useLocalOwnerProfile';
+import { useAuth } from '@/hooks/useAuth';
+import { useOwnerProfile } from '@/hooks/useOwnerProfile';
 
 const PROFILE_SECTIONS = [
   {
@@ -63,13 +63,13 @@ export default function ProfileScreen() {
       <View style={styles.header}>
         <View style={styles.profileInfo}>
           <Image
-            source={profile?.businessLogo || user?.avatar_url || 'https://images.pexels.com/photos/614810/pexels-photo-614810.jpeg'}
+            source={profile?.businessLogo || user?.user_metadata?.avatar_url || 'https://images.pexels.com/photos/614810/pexels-photo-614810.jpeg'}
             style={styles.avatar}
             placeholder="L6PZfSi_.AyE_3t7t7R**0o#DgR4"
           />
           <View style={styles.nameContainer}>
             <Text style={styles.name}>
-              {profile?.businessName || user?.full_name || 'John Doe'}
+              {profile?.businessName || user?.user_metadata?.full_name || 'John Doe'}
             </Text>
             <Text style={styles.email}>{user?.email || 'john.doe@example.com'}</Text>
             {profile?.subscriptionTier && (

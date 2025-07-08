@@ -5,7 +5,6 @@ import { Platform } from 'react-native';
 import { useFrameworkReady } from '@/hooks/useFrameworkReady';
 import { useFonts, Inter_400Regular, Inter_600SemiBold, Inter_700Bold } from '@expo-google-fonts/inter';
 import * as SplashScreen from 'expo-splash-screen';
-import { initializeDatabase } from '@/services/database';
 
 // Prevent the splash screen from auto-hiding before asset loading is complete
 SplashScreen.preventAutoHideAsync();
@@ -18,11 +17,6 @@ export default function RootLayout() {
     'Inter-SemiBold': Inter_600SemiBold,
     'Inter-Bold': Inter_700Bold,
   });
-
-  useEffect(() => {
-    // Initialize database
-    initializeDatabase().catch(console.error);
-  }, []);
 
   useEffect(() => {
     if (fontsLoaded || fontError) {

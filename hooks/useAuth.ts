@@ -22,9 +22,45 @@ export function useAuth() {
     return () => subscription.unsubscribe();
   }, []);
 
+  const signIn = async (email: string, password: string) => {
+    const { data, error } = await supabase.auth.signInWithPassword({
+      email,
+      password,
+    });
+
+    if (error) throw error;
+    return data;
+  };
+
+  const signUp = async (email: string, password: string, fullName: string) => {
+    const { data, error } = await supabase.auth.signUp({
+      email,
+      password,
+      options: {
+        data: {
+          full_name: fullName,
+        },
+      },
+    });
+
+    if (error) throw error;
+    return data;
+  };
+
+  const signOut = async () => {
+    const { error } = await supabase.auth.signOut();
+    if (error) throw error;
+  };
+
   return {
     session,
     loading,
     user: session?.user ?? null,
+    signIn,
+    signUp,
+    signOut,
+    login: signIn,
+    register: signUp,
+    logout: signOut,
   };
 }

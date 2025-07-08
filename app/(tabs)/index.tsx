@@ -4,8 +4,8 @@ import { Image } from 'expo-image';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import FeaturedCarousel from '@/components/FeaturedCarousel';
 import PropertyCard from '@/components/PropertyCard';
-import { getFeaturedProperties } from '@/services/localOwners';
-import { getProperties } from '@/services/localProperties';
+import { getFeaturedProperties } from '@/services/owners';
+import { getProperties } from '@/services/properties';
 
 export default function HomeScreen() {
   const insets = useSafeAreaInsets();
@@ -24,18 +24,20 @@ export default function HomeScreen() {
       
       // Fetch featured properties
       const featured = await getFeaturedProperties('homepage_hero');
-      const transformedFeatured = featured.map(fp => ({
-        id: fp.properties.id,
-        title: fp.properties.title,
-        price: fp.properties.price,
-        location: fp.properties.location,
-        images: fp.properties.images,
-        bedrooms: fp.properties.bedrooms,
-        bathrooms: fp.properties.bathrooms,
-        area: fp.properties.area,
-        type: fp.properties.type,
-        isPremiumListing: true,
-      }));
+      const transformedFeatured = featured
+        .filter(fp => fp.properties)
+        .map(fp => ({
+          id: fp.properties.id,
+          title: fp.properties.title,
+          price: fp.properties.price,
+          location: fp.properties.location,
+          images: fp.properties.images,
+          bedrooms: fp.properties.bedrooms,
+          bathrooms: fp.properties.bathrooms,
+          area: fp.properties.area,
+          type: fp.properties.type,
+          isPremiumListing: true,
+        }));
       setFeaturedProperties(transformedFeatured);
 
       // Fetch recent properties

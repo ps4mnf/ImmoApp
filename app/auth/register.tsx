@@ -3,11 +3,11 @@ import { useState } from 'react';
 import { Link, router } from 'expo-router';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Mail, Lock, User, Eye, EyeOff } from 'lucide-react-native';
-import { useAuth } from '@/hooks/useLocalAuth';
+import { useAuth } from '@/hooks/useAuth';
 
 export default function RegisterScreen() {
   const insets = useSafeAreaInsets();
-  const { register } = useAuth();
+  const { signUp } = useAuth();
   const [fullName, setFullName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -33,7 +33,7 @@ export default function RegisterScreen() {
 
     try {
       setLoading(true);
-      await register(email, password, fullName);
+      await signUp(email, password, fullName);
       router.replace('/(tabs)');
     } catch (error) {
       Alert.alert('Registration Failed', error instanceof Error ? error.message : 'Please try again');

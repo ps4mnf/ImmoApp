@@ -49,6 +49,7 @@ A modern real estate application built with Expo Router and Supabase, featuring 
 - Node.js 18 or higher
 - npm or yarn
 - Expo CLI
+- Supabase account
 
 ### Installation
 
@@ -63,16 +64,41 @@ A modern real estate application built with Expo Router and Supabase, featuring 
    npm install
    ```
 
-3. Create a `.env` file in the root directory:
+3. Set up Supabase:
+   - Create a new project at [supabase.com](https://supabase.com)
+   - Copy your project URL and anon key
+   - The database schema will be automatically created using the migration files
+
+4. Create a `.env` file in the root directory:
    ```
    EXPO_PUBLIC_SUPABASE_URL=your_supabase_url
    EXPO_PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key
    ```
 
-4. Start the development server:
+5. Start the development server:
    ```bash
    npm run dev
    ```
+
+### Deployment
+
+To deploy this app to your phone:
+
+1. **For Development Testing:**
+   ```bash
+   npx expo install --fix
+   npx eas build --platform android --profile preview
+   ```
+
+2. **For Production:**
+   ```bash
+   npx eas build --platform android --profile production
+   npx eas build --platform ios --profile production
+   ```
+
+3. **Install on Device:**
+   - Download the APK (Android) or install via TestFlight (iOS)
+   - Or use Expo Go for development builds
 
 ## Project Structure
 
@@ -109,10 +135,13 @@ Create different environment files for different environments:
 
 ### Database Schema
 
-The application uses the following main tables:
+The application uses Supabase with the following main tables:
 
 - `users` - User profiles and authentication
+- `owner_profiles` - Extended profiles for property owners
 - `properties` - Property listings
+- `property_media` - Images and videos for properties
+- `featured_properties` - Premium property listings
 - `favorites` - Saved properties
 - `messages` - User-agent communication
 
