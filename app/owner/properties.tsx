@@ -2,7 +2,7 @@ import { View, Text, StyleSheet, ScrollView, Pressable, Alert } from 'react-nati
 import { useState, useEffect } from 'react';
 import { Link } from 'expo-router';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { Plus, Edit, Trash2, Eye, Star } from 'lucide-react-native';
+import { Plus, FileEdit as Edit, Trash2, Eye, Star } from 'lucide-react-native';
 import { useAuth } from '@/hooks/useAuth';
 import { getPropertiesByAgent, deleteProperty } from '@/services/properties';
 import PropertyCard from '@/components/PropertyCard';
