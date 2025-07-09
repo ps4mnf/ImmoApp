@@ -1,6 +1,6 @@
 import { View, Text, StyleSheet, ScrollView, Platform, RefreshControl } from 'react-native';
 import { useState, useCallback, useEffect } from 'react';
-import { Image } from 'expo-image';
+import { Image } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import FeaturedCarousel from '@/components/FeaturedCarousel';
 import PropertyCard from '@/components/PropertyCard';
@@ -96,8 +96,8 @@ export default function HomeScreen() {
       }
     >
       <View style={styles.header}>
-        <Text style={styles.title}>Featured Properties</Text>
-        <Text style={styles.subtitle}>Discover our premium listings</Text>
+        <Text style={styles.title}>Discover Your Dream Home</Text>
+        <Text style={styles.subtitle}>Premium properties curated just for you</Text>
       </View>
 
       {!loading && featuredProperties.length > 0 && (
@@ -119,31 +119,35 @@ export default function HomeScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: '#f8fafc',
   },
   header: {
-    padding: 20,
     backgroundColor: '#fff',
+    padding: 24,
+    borderBottomWidth: 1,
+    borderBottomColor: '#f1f5f9',
   },
   title: {
-    fontSize: 28,
+    fontSize: 32,
     fontFamily: 'Inter-Bold',
     color: '#1a1a1a',
+    lineHeight: 40,
   },
   subtitle: {
     fontSize: 16,
     fontFamily: 'Inter-Regular',
     color: '#666',
-    marginTop: 4,
+    marginTop: 8,
+    lineHeight: 24,
   },
   section: {
-    padding: 20,
+    padding: 24,
   },
   sectionTitle: {
-    fontSize: 22,
+    fontSize: 24,
     fontFamily: 'Inter-SemiBold',
     color: '#1a1a1a',
-    marginBottom: 16,
+    marginBottom: 20,
   },
   propertiesGrid: {
     gap: 16,

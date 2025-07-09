@@ -1,7 +1,7 @@
 import { View, Text, StyleSheet, ScrollView, TextInput, Pressable, Alert } from 'react-native';
 import { useState, useEffect } from 'react';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { Image } from 'expo-image';
+import { Image } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 import { Camera, Upload, Save, MapPin, Globe, Clock } from 'lucide-react-native';
 import { useOwnerProfile } from '@/hooks/useOwnerProfile';
@@ -135,7 +135,7 @@ export default function OwnerProfileEdit() {
       <View style={styles.coverSection}>
         <Pressable style={styles.coverImageContainer} onPress={() => pickImage('cover')}>
           {formData.coverImage ? (
-            <Image source={formData.coverImage} style={styles.coverImage} contentFit="cover" />
+            <Image source={{ uri: formData.coverImage }} style={styles.coverImage} resizeMode="cover" />
           ) : (
             <View style={styles.coverPlaceholder}>
               <Upload size={32} color="#666" />
@@ -147,7 +147,7 @@ export default function OwnerProfileEdit() {
         {/* Business Logo */}
         <Pressable style={styles.logoContainer} onPress={() => pickImage('logo')}>
           {formData.businessLogo ? (
-            <Image source={formData.businessLogo} style={styles.logo} contentFit="cover" />
+            <Image source={{ uri: formData.businessLogo }} style={styles.logo} resizeMode="cover" />
           ) : (
             <View style={styles.logoPlaceholder}>
               <Camera size={24} color="#666" />

@@ -1,5 +1,5 @@
 import { View, Text, StyleSheet, Pressable, Platform } from 'react-native';
-import { Image } from 'expo-image';
+import { Image } from 'react-native';
 import { Link } from 'expo-router';
 import { Bed, Bath, Square, MapPin } from 'lucide-react-native';
 import type { Property } from '@/types';
@@ -21,11 +21,9 @@ export default function PropertyCard({ property }: PropertyCardProps) {
       <Pressable style={styles.container}>
         <View style={styles.imageContainer}>
           <Image
-            source={property.images[0]}
+            source={{ uri: property.images[0] }}
             style={styles.image}
-            contentFit="cover"
-            transition={200}
-            placeholder="L6PZfSi_.AyE_3t7t7R**0o#DgR4"
+            resizeMode="cover"
           />
           {property.isPremiumListing && (
             <View style={styles.badgeContainer}>
@@ -70,22 +68,21 @@ const styles = StyleSheet.create({
   container: {
     width: '100%',
     backgroundColor: '#fff',
-    borderRadius: 12,
+    borderRadius: 16,
     overflow: 'hidden',
-    borderWidth: 1,
-    borderColor: '#eee',
     shadowColor: '#000',
     shadowOffset: {
       width: 0,
-      height: 2,
+      height: 4,
     },
-    shadowOpacity: 0.1,
-    shadowRadius: 3.84,
-    elevation: 5,
+    shadowOpacity: 0.12,
+    shadowRadius: 8,
+    elevation: 8,
+    marginBottom: 20,
   },
   imageContainer: {
     position: 'relative',
-    height: 200,
+    height: 220,
   },
   image: {
     width: '100%',
@@ -93,53 +90,53 @@ const styles = StyleSheet.create({
   },
   badgeContainer: {
     position: 'absolute',
-    top: 12,
-    right: 12,
+    top: 16,
+    right: 16,
   },
   content: {
-    padding: 16,
+    padding: 20,
   },
   price: {
-    fontSize: 20,
+    fontSize: 24,
     fontFamily: 'Inter-Bold',
     color: '#1a1a1a',
   },
   rentPeriod: {
-    fontSize: 14,
+    fontSize: 16,
     fontFamily: 'Inter-Regular',
     color: '#666',
   },
   title: {
-    fontSize: 16,
+    fontSize: 18,
     fontFamily: 'Inter-SemiBold',
     color: '#1a1a1a',
-    marginTop: 4,
+    marginTop: 8,
   },
   location: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 4,
-    marginTop: 8,
+    gap: 6,
+    marginTop: 12,
   },
   locationText: {
-    fontSize: 14,
+    fontSize: 15,
     fontFamily: 'Inter-Regular',
     color: '#666',
     flex: 1,
   },
   features: {
     flexDirection: 'row',
-    gap: 16,
-    marginTop: 12,
+    gap: 20,
+    marginTop: 16,
   },
   feature: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 4,
+    gap: 6,
   },
   featureText: {
-    fontSize: 14,
-    fontFamily: 'Inter-Regular',
-    color: '#666',
+    fontSize: 15,
+    fontFamily: 'Inter-SemiBold',
+    color: '#374151',
   },
 });

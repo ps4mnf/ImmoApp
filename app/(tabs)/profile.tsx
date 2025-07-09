@@ -1,5 +1,5 @@
 import { View, Text, StyleSheet, ScrollView, Pressable, Platform } from 'react-native';
-import { Image } from 'expo-image';
+import { Image } from 'react-native';
 import { Link } from 'expo-router';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Settings, Heart, MessageSquare, Home, LogOut, Crown, BarChart3 } from 'lucide-react-native';
@@ -63,9 +63,10 @@ export default function ProfileScreen() {
       <View style={styles.header}>
         <View style={styles.profileInfo}>
           <Image
-            source={profile?.businessLogo || user?.user_metadata?.avatar_url || 'https://images.pexels.com/photos/614810/pexels-photo-614810.jpeg'}
+            source={{ 
+              uri: profile?.businessLogo || user?.user_metadata?.avatar_url || 'https://images.pexels.com/photos/614810/pexels-photo-614810.jpeg'
+            }}
             style={styles.avatar}
-            placeholder="L6PZfSi_.AyE_3t7t7R**0o#DgR4"
           />
           <View style={styles.nameContainer}>
             <Text style={styles.name}>
@@ -115,18 +116,18 @@ export default function ProfileScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: '#f8fafc',
   },
   header: {
-    padding: 20,
     backgroundColor: '#fff',
+    padding: 24,
     borderBottomWidth: 1,
-    borderBottomColor: '#f4f4f5',
+    borderBottomColor: '#f1f5f9',
   },
   profileInfo: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginBottom: 20,
+    marginBottom: 24,
   },
   avatar: {
     width: 80,
@@ -167,7 +168,7 @@ const styles = StyleSheet.create({
   editButton: {
     backgroundColor: '#2563eb',
     borderRadius: 12,
-    padding: 12,
+    padding: 16,
     alignItems: 'center',
   },
   editButtonText: {
@@ -176,22 +177,20 @@ const styles = StyleSheet.create({
     fontFamily: 'Inter-SemiBold',
   },
   sections: {
-    padding: 20,
+    padding: 24,
     gap: 16,
   },
   section: {
     flexDirection: 'row',
     alignItems: 'center',
     backgroundColor: '#fff',
-    borderRadius: 12,
-    padding: 16,
-    borderWidth: 1,
-    borderColor: '#f4f4f5',
+    borderRadius: 16,
+    padding: 20,
     shadowColor: '#000',
-    shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.1,
-    shadowRadius: 2,
-    elevation: 2,
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.08,
+    shadowRadius: 8,
+    elevation: 4,
   },
   sectionContent: {
     marginLeft: 16,
@@ -213,8 +212,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     backgroundColor: '#fef2f2',
-    borderRadius: 12,
-    padding: 16,
+    borderRadius: 16,
+    padding: 20,
     marginTop: 20,
   },
   logoutText: {

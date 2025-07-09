@@ -1,6 +1,6 @@
 import { useState, useRef } from 'react';
 import { View, StyleSheet, ScrollView, Dimensions, Pressable, Platform } from 'react-native';
-import { Image } from 'expo-image';
+import { Image } from 'react-native';
 import { Link } from 'expo-router';
 import type { Property } from '@/types';
 
@@ -40,11 +40,9 @@ export default function FeaturedCarousel({ properties }: FeaturedCarouselProps) 
           <Link key={property.id} href={`/property/${property.id}`} asChild>
             <Pressable style={[styles.item, { width: ITEM_WIDTH }]}>
               <Image
-                source={property.images[0]}
+                source={{ uri: property.images[0] }}
                 style={[styles.image, { height: ITEM_HEIGHT }]}
-                contentFit="cover"
-                transition={200}
-                placeholder="L6PZfSi_.AyE_3t7t7R**0o#DgR4"
+                resizeMode="cover"
               />
             </Pressable>
           </Link>
@@ -75,16 +73,16 @@ const styles = StyleSheet.create({
     gap: 16,
   },
   item: {
-    borderRadius: 12,
+    borderRadius: 16,
     overflow: 'hidden',
     shadowColor: '#000',
     shadowOffset: {
       width: 0,
-      height: 2,
+      height: 4,
     },
-    shadowOpacity: 0.1,
-    shadowRadius: 3.84,
-    elevation: 5,
+    shadowOpacity: 0.15,
+    shadowRadius: 12,
+    elevation: 8,
   },
   image: {
     width: '100%',
@@ -93,14 +91,14 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
-    marginTop: 16,
+    marginTop: 20,
     gap: 8,
   },
   paginationDot: {
     width: 8,
     height: 8,
     borderRadius: 4,
-    backgroundColor: '#ddd',
+    backgroundColor: '#d1d5db',
   },
   paginationDotActive: {
     backgroundColor: '#2563eb',

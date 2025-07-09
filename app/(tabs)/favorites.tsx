@@ -1,6 +1,6 @@
 import { View, Text, StyleSheet, ScrollView, Platform } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { Heart } from 'lucide-react-native';
+import { Heart, Star } from 'lucide-react-native';
 import PropertyCard from '@/components/PropertyCard';
 
 const FAVORITE_PROPERTIES = [
@@ -28,6 +28,18 @@ const FAVORITE_PROPERTIES = [
     type: 'rent' as const,
     isPremiumListing: false,
   },
+  {
+    id: '3',
+    title: 'Mountain Retreat',
+    price: 850000,
+    location: 'Aspen, CO',
+    images: ['https://images.pexels.com/photos/338504/pexels-photo-338504.jpeg'],
+    bedrooms: 4,
+    bathrooms: 3,
+    area: 3200,
+    type: 'sale' as const,
+    isPremiumListing: true,
+  },
 ];
 
 export default function FavoritesScreen() {
@@ -36,8 +48,8 @@ export default function FavoritesScreen() {
   return (
     <View style={[styles.container, { paddingTop: insets.top }]}>
       <View style={styles.header}>
-        <Text style={styles.title}>Favorites</Text>
-        <Text style={styles.subtitle}>Your saved properties</Text>
+        <Text style={styles.title}>Your Favorites</Text>
+        <Text style={styles.subtitle}>Properties you've saved for later</Text>
       </View>
 
       {FAVORITE_PROPERTIES.length > 0 ? (
@@ -45,16 +57,31 @@ export default function FavoritesScreen() {
           style={styles.propertiesList}
           contentContainerStyle={styles.propertiesContent}
         >
+          <View style={styles.statsContainer}>
+            <View style={styles.statCard}>
+              <Heart size={24} color="#ef4444" />
+              <Text style={styles.statNumber}>{FAVORITE_PROPERTIES.length}</Text>
+              <Text style={styles.statLabel}>Saved Properties</Text>
+            </View>
+            <View style={styles.statCard}>
+              <Star size={24} color="#f59e0b" />
+              <Text style={styles.statNumber}>
+                {FAVORITE_PROPERTIES.filter(p => p.isPremiumListing).length}
+              </Text>
+              <Text style={styles.statLabel}>Premium Listings</Text>
+            </View>
+          </View>
+
           {FAVORITE_PROPERTIES.map((property) => (
             <PropertyCard key={property.id} property={property} />
           ))}
         </ScrollView>
       ) : (
         <View style={styles.emptyState}>
-          <Heart size={48} color="#666" />
+          <Heart size={64} color="#e5e7eb" />
           <Text style={styles.emptyStateTitle}>No Favorites Yet</Text>
           <Text style={styles.emptyStateSubtitle}>
-            Save properties you like to view them later
+            Start exploring properties and save the ones you love by tapping the heart icon
           </Text>
         </View>
       )}
@@ -65,47 +92,81 @@ export default function FavoritesScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: '#f8fafc',
   },
   header: {
-    padding: 20,
     backgroundColor: '#fff',
+    padding: 24,
+    borderBottomWidth: 1,
+    borderBottomColor: '#f1f5f9',
   },
   title: {
-    fontSize: 28,
+    fontSize: 32,
     fontFamily: 'Inter-Bold',
     color: '#1a1a1a',
+    lineHeight: 40,
   },
   subtitle: {
     fontSize: 16,
     fontFamily: 'Inter-Regular',
     color: '#666',
-    marginTop: 4,
+    marginTop: 8,
+    lineHeight: 24,
   },
   propertiesList: {
     flex: 1,
   },
   propertiesContent: {
-    padding: 20,
+    padding: 24,
+  },
+  statsContainer: {
+    flexDirection: 'row',
     gap: 16,
+    marginBottom: 24,
+  },
+  statCard: {
+    flex: 1,
+    backgroundColor: '#fff',
+    borderRadius: 16,
+    padding: 20,
+    alignItems: 'center',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.08,
+    shadowRadius: 8,
+    elevation: 4,
+  },
+  statNumber: {
+    fontSize: 24,
+    fontFamily: 'Inter-Bold',
+    color: '#1a1a1a',
+    marginTop: 8,
+  },
+  statLabel: {
+    fontSize: 14,
+    fontFamily: 'Inter-Regular',
+    color: '#666',
+    marginTop: 4,
+    textAlign: 'center',
   },
   emptyState: {
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
-    padding: 20,
+    padding: 40,
   },
   emptyStateTitle: {
-    fontSize: 20,
+    fontSize: 24,
     fontFamily: 'Inter-SemiBold',
     color: '#1a1a1a',
-    marginTop: 16,
+    marginTop: 24,
   },
   emptyStateSubtitle: {
     fontSize: 16,
     fontFamily: 'Inter-Regular',
     color: '#666',
-    marginTop: 8,
+    marginTop: 12,
     textAlign: 'center',
+    lineHeight: 24,
   },
 });

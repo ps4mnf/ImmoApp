@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { View, Text, StyleSheet, ScrollView, TextInput, Pressable, Platform } from 'react-native';
-import { Image } from 'expo-image';
+import { Image } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Search, MessageSquare } from 'lucide-react-native';
 
@@ -85,11 +85,13 @@ export default function MessagesScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: '#f8fafc',
   },
   header: {
-    padding: 20,
     backgroundColor: '#fff',
+    padding: 24,
+    borderBottomWidth: 1,
+    borderBottomColor: '#f1f5f9',
   },
   title: {
     fontSize: 28,
@@ -103,16 +105,17 @@ const styles = StyleSheet.create({
     marginTop: 4,
   },
   searchContainer: {
-    padding: 20,
-    paddingTop: 0,
+    padding: 24,
+    paddingTop: 16,
+    backgroundColor: '#fff',
   },
   searchBar: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: '#f4f4f5',
-    borderRadius: 12,
-    padding: 12,
-    gap: 8,
+    backgroundColor: '#f8fafc',
+    borderRadius: 16,
+    padding: 16,
+    gap: 12,
   },
   input: {
     flex: 1,
@@ -122,19 +125,20 @@ const styles = StyleSheet.create({
   },
   messagesList: {
     flex: 1,
+    backgroundColor: '#fff',
   },
   messageItem: {
     flexDirection: 'row',
     alignItems: 'center',
-    padding: 16,
+    padding: 20,
     borderBottomWidth: 1,
-    borderBottomColor: '#f4f4f5',
+    borderBottomColor: '#f8fafc',
   },
   avatar: {
-    width: 50,
-    height: 50,
-    borderRadius: 25,
-    marginRight: 12,
+    width: 56,
+    height: 56,
+    borderRadius: 28,
+    marginRight: 16,
   },
   messageContent: {
     flex: 1,
@@ -143,7 +147,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    marginBottom: 4,
+    marginBottom: 6,
   },
   name: {
     fontSize: 16,
@@ -156,7 +160,7 @@ const styles = StyleSheet.create({
     color: '#666',
   },
   lastMessage: {
-    fontSize: 14,
+    fontSize: 15,
     fontFamily: 'Inter-Regular',
     color: '#666',
   },
@@ -165,7 +169,7 @@ const styles = StyleSheet.create({
     borderRadius: 12,
     paddingHorizontal: 8,
     paddingVertical: 4,
-    marginLeft: 8,
+    marginLeft: 12,
   },
   unreadText: {
     color: '#fff',
@@ -176,7 +180,7 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
-    padding: 20,
+    padding: 40,
   },
   emptyStateTitle: {
     fontSize: 20,

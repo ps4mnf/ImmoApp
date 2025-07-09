@@ -1,6 +1,6 @@
 import { View, Text, StyleSheet, Pressable, Alert } from 'react-native';
 import { useState } from 'react';
-import { Image } from 'expo-image';
+import { Image } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 import { Camera, Video, Upload, X } from 'lucide-react-native';
 import type { PropertyMedia } from '@/types/owner';
@@ -169,10 +169,9 @@ export default function MediaUploader({
           {media.map((item, index) => (
             <View key={item.id || index} style={styles.mediaItem}>
               <Image
-                source={item.mediaUrl}
+                source={{ uri: item.mediaUrl }}
                 style={styles.mediaImage}
-                contentFit="cover"
-                placeholder="L6PZfSi_.AyE_3t7t7R**0o#DgR4"
+                resizeMode="cover"
               />
               
               {/* Media Type Indicator */}

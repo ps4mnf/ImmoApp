@@ -2,7 +2,7 @@ import { View, Text, StyleSheet, ScrollView, Pressable, Alert } from 'react-nati
 import { useState, useEffect } from 'react';
 import { Link } from 'expo-router';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { Image } from 'expo-image';
+import { Image } from 'react-native';
 import { 
   Home, 
   Star, 
@@ -132,9 +132,10 @@ export default function OwnerDashboard() {
       <View style={styles.header}>
         <View style={styles.welcomeSection}>
           <Image
-            source={profile?.businessLogo || user?.user_metadata?.avatar_url || 'https://images.pexels.com/photos/614810/pexels-photo-614810.jpeg'}
+            source={{ 
+              uri: profile?.businessLogo || user?.user_metadata?.avatar_url || 'https://images.pexels.com/photos/614810/pexels-photo-614810.jpeg'
+            }}
             style={styles.avatar}
-            placeholder="L6PZfSi_.AyE_3t7t7R**0o#DgR4"
           />
           <View style={styles.welcomeText}>
             <Text style={styles.welcomeTitle}>

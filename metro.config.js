@@ -5,7 +5,7 @@ const config = getDefaultConfig(__dirname);
 // Enhanced resolver configuration for better module resolution
 config.resolver.platforms = ['web', 'native', 'ios', 'android'];
 
-// Remove problematic alias - expo-image should resolve naturally
+// Clear any problematic aliases
 config.resolver.alias = {};
 
 // Ensure proper asset and source extensions
