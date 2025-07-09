@@ -5,10 +5,8 @@ const config = getDefaultConfig(__dirname);
 // Enhanced resolver configuration for better module resolution
 config.resolver.platforms = ['web', 'native', 'ios', 'android'];
 
-// Module alias resolution for problematic packages
-config.resolver.alias = {
-  'expo-image': require.resolve('expo-image'),
-};
+// Remove problematic alias - expo-image should resolve naturally
+config.resolver.alias = {};
 
 // Ensure proper asset and source extensions
 config.resolver.assetExts.push('db', 'sqlite', 'sqlite3');
