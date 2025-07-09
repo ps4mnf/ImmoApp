@@ -8,7 +8,6 @@ config.resolver.platforms = ['web', 'native', 'ios', 'android'];
 // Module alias resolution for problematic packages
 config.resolver.alias = {
   'expo-image': require.resolve('expo-image'),
-  'expo-image/src/Image': require.resolve('expo-image'),
 };
 
 // Ensure proper asset and source extensions
