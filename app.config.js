@@ -46,12 +46,6 @@ export default {
       'expo-router',
       'expo-font',
       [
-        'expo-image',
-        {
-          enableAnimatedWebP: false
-        }
-      ],
-      [
         'expo-camera',
         {
           cameraPermission: 'Allow $(PRODUCT_NAME) to access your camera to take photos of properties',
