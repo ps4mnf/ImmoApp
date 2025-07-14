@@ -5,16 +5,17 @@ import Colors from '@/constants/Colors';
 
 export default function TabLayout() {
   const colorScheme = useColorScheme();
+  const colors = Colors[colorScheme ?? 'light'];
 
   return (
     <Tabs
       screenOptions={{
-        tabBarActiveTintColor: Colors[colorScheme ?? 'light'].tint,
-        tabBarInactiveTintColor: Colors[colorScheme ?? 'light'].tabIconDefault,
+        tabBarActiveTintColor: colors.tint,
+        tabBarInactiveTintColor: colors.tabIconDefault,
         tabBarStyle: {
-          backgroundColor: Colors[colorScheme ?? 'light'].background,
+          backgroundColor: colors.background,
           borderTopWidth: 1,
-          borderTopColor: Colors[colorScheme ?? 'light'].border,
+          borderTopColor: colors.border,
           height: Platform.OS === 'android' ? 60 : 80,
           paddingBottom: Platform.OS === 'android' ? 8 : 20,
           paddingTop: 8,

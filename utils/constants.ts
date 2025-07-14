@@ -65,15 +65,47 @@ export const BORDER_RADIUS = {
   full: 9999,
 } as const;
 
-export const SHADOW = Platform.select({
-  ios: {
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 4,
-  },
-  android: {
-    elevation: 4,
-  },
-  default: {},
-});
+export const SHADOW = {
+  small: Platform.select({
+    ios: {
+      shadowColor: '#000',
+      shadowOffset: { width: 0, height: 1 },
+      shadowOpacity: 0.1,
+      shadowRadius: 2,
+    },
+    android: {
+      elevation: 2,
+    },
+    web: {
+      boxShadow: '0 1px 3px rgba(0, 0, 0, 0.1)',
+    },
+  }),
+  medium: Platform.select({
+    ios: {
+      shadowColor: '#000',
+      shadowOffset: { width: 0, height: 2 },
+      shadowOpacity: 0.1,
+      shadowRadius: 4,
+    },
+    android: {
+      elevation: 4,
+    },
+    web: {
+      boxShadow: '0 2px 8px rgba(0, 0, 0, 0.1)',
+    },
+  }),
+  large: Platform.select({
+    ios: {
+      shadowColor: '#000',
+      shadowOffset: { width: 0, height: 4 },
+      shadowOpacity: 0.15,
+      shadowRadius: 8,
+    },
+    android: {
+      elevation: 8,
+    },
+    web: {
+      boxShadow: '0 4px 16px rgba(0, 0, 0, 0.15)',
+    },
+  }),
+};
