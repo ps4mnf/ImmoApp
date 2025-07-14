@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { View, Text, StyleSheet, ScrollView, Pressable, useWindowDimensions, Platform } from 'react-native';
-import { Image } from 'react-native';
+import { Image } from 'expo-image';
 import { useLocalSearchParams } from 'expo-router';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Heart, Share2, Bed, Bath, Square, MapPin, Phone, MessageSquare, Star, Calendar } from 'lucide-react-native';

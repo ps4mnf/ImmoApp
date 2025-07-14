@@ -1,7 +1,6 @@
 import { View, Text, StyleSheet, ScrollView, Platform } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Heart, Star } from 'lucide-react-native';
-import PropertyCard from '@/components/PropertyCard';
 
 const FAVORITE_PROPERTIES = [
   {

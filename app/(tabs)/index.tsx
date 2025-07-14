@@ -1,6 +1,6 @@
 import { View, Text, StyleSheet, ScrollView, Platform, RefreshControl } from 'react-native';
 import { useState, useCallback, useEffect } from 'react';
-import { Image } from 'react-native';
+import { Image } from 'expo-image';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import FeaturedCarousel from '@/components/FeaturedCarousel';
 import PropertyCard from '@/components/PropertyCard';

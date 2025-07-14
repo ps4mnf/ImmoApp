@@ -1,6 +1,6 @@
 import { useState, useRef } from 'react';
 import { View, StyleSheet, ScrollView, Dimensions, Pressable, Platform } from 'react-native';
-import { Image } from 'react-native';
+import { Image } from 'expo-image';
 import { Link } from 'expo-router';
 import type { Property } from '@/types';
 

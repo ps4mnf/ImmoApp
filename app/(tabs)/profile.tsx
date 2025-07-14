@@ -1,5 +1,5 @@
 import { View, Text, StyleSheet, ScrollView, Pressable, Platform } from 'react-native';
-import { Image } from 'react-native';
+import { Image } from 'expo-image';
 import { Link } from 'expo-router';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Settings, Heart, MessageSquare, Home, LogOut, Crown, BarChart3 } from 'lucide-react-native';

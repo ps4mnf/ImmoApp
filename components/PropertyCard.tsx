@@ -1,5 +1,5 @@
 import { View, Text, StyleSheet, Pressable, Platform } from 'react-native';
-import { Image } from 'react-native';
+import { Image } from 'expo-image';
 import { Link } from 'expo-router';
 import { Bed, Bath, Square, MapPin } from 'lucide-react-native';
 import type { Property } from '@/types';
