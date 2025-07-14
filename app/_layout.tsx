@@ -5,6 +5,8 @@ import { Platform } from 'react-native';
 import { useFrameworkReady } from '@/hooks/useFrameworkReady';
 import { useFonts, Inter_400Regular, Inter_600SemiBold, Inter_700Bold } from '@expo-google-fonts/inter';
 import * as SplashScreen from 'expo-splash-screen';
+import ErrorBoundary from '@/components/ErrorBoundary';
+import { initializeSupabase } from '@/utils/supabaseUtils';
 
 // Prevent the splash screen from auto-hiding before asset loading is complete
 SplashScreen.preventAutoHideAsync();
@@ -24,12 +26,15 @@ export default function RootLayout() {
     }
   }, [fontsLoaded, fontError]);
 
+  useEffect(() => {
+    initializeSupabase();
+  }, []);
   if (!fontsLoaded && !fontError) {
     return null;
   }
 
   return (
-    <>
+    <ErrorBoundary>
       <Stack screenOptions={{ headerShown: false }}>
         <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
         <Stack.Screen name="auth" options={{ headerShown: false }} />
@@ -42,6 +47,6 @@ export default function RootLayout() {
         <Stack.Screen name="+not-found" />
       </Stack>
       <StatusBar style={Platform.OS === 'ios' ? 'auto' : 'dark'} />
-    </>
+    </ErrorBoundary>
   );
 }
