@@ -1,7 +1,7 @@
 import { View, Text, StyleSheet, ScrollView, TextInput, Pressable, Alert } from 'react-native';
 import { useState, useEffect } from 'react';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { Image } from 'react-native';
+import { Image } from 'expo-image';
 import * as ImagePicker from 'expo-image-picker';
 import { Camera, Upload, Save, MapPin, Globe, Clock } from 'lucide-react-native';
 import { useOwnerProfile } from '@/hooks/useOwnerProfile';

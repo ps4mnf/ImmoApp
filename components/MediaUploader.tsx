@@ -1,6 +1,6 @@
 import { View, Text, StyleSheet, Pressable, Alert } from 'react-native';
 import { useState } from 'react';
-import { Image } from 'react-native';
+import { Image } from 'expo-image';
 import * as ImagePicker from 'expo-image-picker';
 import { Camera, Video, Upload, X } from 'lucide-react-native';
 import type { PropertyMedia } from '@/types/owner';

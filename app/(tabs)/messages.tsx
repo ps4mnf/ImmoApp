@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { View, Text, StyleSheet, ScrollView, TextInput, Pressable, Platform } from 'react-native';
-import { Image } from 'expo-image';
+import { Image } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Search, MessageSquare } from 'lucide-react-native';
 

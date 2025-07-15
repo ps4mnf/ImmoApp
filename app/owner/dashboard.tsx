@@ -2,7 +2,7 @@ import { View, Text, StyleSheet, ScrollView, Pressable, Alert } from 'react-nati
 import { useState, useEffect } from 'react';
 import { Link } from 'expo-router';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { Image } from 'react-native';
+import { Image } from 'expo-image';
 import { 
   Home, 
   Star, 
