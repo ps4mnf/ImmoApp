@@ -9,7 +9,19 @@ let supabase: any;
 if (!supabaseUrl || !supabaseAnonKey || supabaseUrl.includes('demo') || supabaseAnonKey.includes('demo')) {
   console.warn('Using demo Supabase configuration. Please set up your actual Supabase project.');
   
-  // Create a mock client that returns empty data
+  // Create a chainable mock query builder
+  const createMockQueryBuilder = () => {
+    const mockBuilder = {
+      eq: () => mockBuilder,
+      order: () => mockBuilder,
+      limit: () => mockBuilder,
+      single: () => Promise.resolve({ data: null, error: null }),
+      then: (resolve: any) => resolve({ data: [], error: null }),
+    };
+    return mockBuilder;
+  };
+
+  // Create a mock client that returns properly chainable objects
   supabase = {
     auth: {
       getSession: () => Promise.resolve({ data: { session: null }, error: null }),
@@ -20,14 +32,7 @@ if (!supabaseUrl || !supabaseAnonKey || supabaseUrl.includes('demo') || supabase
       getUser: () => Promise.resolve({ data: { user: null }, error: null }),
     },
     from: () => ({
-      select: () => ({
-        eq: () => ({
-          single: () => Promise.resolve({ data: null, error: null }),
-          order: () => Promise.resolve({ data: [], error: null }),
-        }),
-        order: () => Promise.resolve({ data: [], error: null }),
-        limit: () => Promise.resolve({ data: [], error: null }),
-      }),
+      select: () => createMockQueryBuilder(),
       insert: () => ({
         select: () => ({
           single: () => Promise.resolve({ data: null, error: new Error('Demo mode - database writes disabled') }),
