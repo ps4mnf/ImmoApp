@@ -26,11 +26,13 @@ const createMockClient = () => ({
 });
 
 // Use mock client if environment variables are not set
+let supabase: any;
+
 if (!supabaseUrl || !supabaseAnonKey) {
   console.warn('Supabase not configured. Using mock client for development.');
-  export const supabase = createMockClient() as any;
+  supabase = createMockClient() as any;
 } else {
-  export const supabase = createClient<Database>(
+  supabase = createClient<Database>(
     supabaseUrl, 
     supabaseAnonKey,
     {
@@ -46,4 +48,3 @@ if (!supabaseUrl || !supabaseAnonKey) {
       },
     }
   );
-}
