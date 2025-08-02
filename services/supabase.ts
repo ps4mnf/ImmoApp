@@ -3,12 +3,14 @@ import { createClient } from '@supabase/supabase-js';
 const supabaseUrl = process.env.EXPO_PUBLIC_SUPABASE_URL || '';
 const supabaseAnonKey = process.env.EXPO_PUBLIC_SUPABASE_ANON_KEY || '';
 
+let supabase: any;
+
 // Create a mock client for demo purposes when environment variables are not properly configured
 if (!supabaseUrl || !supabaseAnonKey || supabaseUrl.includes('demo') || supabaseAnonKey.includes('demo')) {
   console.warn('Using demo Supabase configuration. Please set up your actual Supabase project.');
   
   // Create a mock client that returns empty data
-  export const supabase = {
+  supabase = {
     auth: {
       getSession: () => Promise.resolve({ data: { session: null }, error: null }),
       onAuthStateChange: () => ({ data: { subscription: { unsubscribe: () => {} } } }),
@@ -42,7 +44,9 @@ if (!supabaseUrl || !supabaseAnonKey || supabaseUrl.includes('demo') || supabase
         eq: () => Promise.resolve({ error: new Error('Demo mode - database writes disabled') }),
       }),
     }),
-  } as any;
+  };
 } else {
-  export const supabase = createClient(supabaseUrl, supabaseAnonKey);
+  supabase = createClient(supabaseUrl, supabaseAnonKey);
 }
+
+export { supabase };
