@@ -118,12 +118,15 @@ export default function OwnerProfileEdit() {
   };
 
   const handleSave = async () => {
+    console.log('Saving profile with data:', formData);
+    
     try {
       setSaving(true);
       await updateProfile(formData);
-      Alert.alert('Success', 'Profile updated successfully!');
+      Alert.alert('Succès', 'Profil mis à jour avec succès!');
     } catch (error) {
-      Alert.alert('Error', 'Failed to update profile. Please try again.');
+      console.error('Save profile error:', error);
+      Alert.alert('Erreur', 'Échec de la mise à jour du profil. Veuillez réessayer.');
     } finally {
       setSaving(false);
     }

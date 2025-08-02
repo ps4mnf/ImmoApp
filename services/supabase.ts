@@ -6,11 +6,34 @@ const supabaseAnonKey = process.env.EXPO_PUBLIC_SUPABASE_ANON_KEY;
 
 // Create a comprehensive mock client for development when Supabase is not configured
 const createMockClient = () => {
+  // Mock storage for development
+  const mockStorage = {
+    owner_profiles: new Map(),
+    users: new Map(),
+    properties: new Map(),
+  };
+
   const mockQuery = {
     select: () => mockQuery,
     insert: () => mockQuery,
-    update: () => mockQuery,
-    delete: () => mockQuery,
+      return {
+        ...mockQuery,
+        select: () => ({
+          ...mockQuery,
+          single: () => {
+            // Generate a mock response for insert operations
+            const mockId = Math.random().toString(36).substr(2, 9);
+            const mockData = {
+              id: mockId,
+              ...data,
+              created_at: new Date().toISOString(),
+              updated_at: new Date().toISOString(),
+            };
+            console.log('Mock insert successful:', mockData);
+            return Promise.resolve({ data: mockData, error: null });
+          },
+        }),
+      };
     eq: () => mockQuery,
     single: () => Promise.resolve({ data: null, error: null }),
     order: () => mockQuery,
@@ -33,8 +56,30 @@ const createMockClient = () => {
       getUser: () => Promise.resolve({ data: { user: null }, error: null }),
     },
   };
-};
-
+      return {
+        ...mockQuery,
+        eq: (column: string, value: any) => ({
+          ...mockQuery,
+          select: () => ({
+            ...mockQuery,
+            single: () => {
+              const mockData = {
+                id: value,
+                ...data,
+                updated_at: new Date().toISOString(),
+              };
+    then: (resolve: any) => {
+      // Return empty array for select operations
+      return resolve({ data: [], error: null });
+    },
+              return Promise.resolve({ data: mockData, error: null });
+            },
+          }),
+    from: (table: string) => {
+      console.log(`Mock Supabase: Accessing table "${table}"`);
+      return mockQuery;
+    },
+      };
 // Check if environment variables are properly configured
 const isSupabaseConfigured = () => {
   return supabaseUrl && 

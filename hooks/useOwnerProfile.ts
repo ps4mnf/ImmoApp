@@ -45,11 +45,27 @@ export function useOwnerProfile() {
   const updateProfile = async (updates: Partial<OwnerProfile>) => {
     if (!user) return;
 
+    console.log('useOwnerProfile: Updating profile with:', updates);
+
     try {
-      const updatedProfile = await updateOwnerProfile(user.id, updates);
+      let updatedProfile;
+      
+      if (profile) {
+        // Update existing profile
+        updatedProfile = await updateOwnerProfile(user.id, updates);
+      } else {
+        // Create new profile if it doesn't exist
+        updatedProfile = await createOwnerProfile({
+          userId: user.id,
+          ...updates,
+        });
+      }
+      
       setProfile(updatedProfile);
+      console.log('Profile updated successfully:', updatedProfile);
       return updatedProfile;
     } catch (err) {
+      console.error('Error updating profile:', err);
       setError(err instanceof Error ? err : new Error('Failed to update profile'));
       throw err;
     }

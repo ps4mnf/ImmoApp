@@ -14,6 +14,8 @@ export async function getOwnerProfile(userId: string): Promise<OwnerProfile | nu
 }
 
 export async function createOwnerProfile(profile: Partial<OwnerProfile>): Promise<OwnerProfile> {
+  console.log('Creating owner profile:', profile);
+  
   const { data, error } = await supabase
     .from('owner_profiles')
     .insert({
@@ -34,7 +36,13 @@ export async function createOwnerProfile(profile: Partial<OwnerProfile>): Promis
     .select()
     .single();
 
-  if (error) throw error;
+  if (error) {
+    console.error('Error creating owner profile:', error);
+    throw error;
+  }
+  
+  console.log('Owner profile created successfully:', data);
+  
   return {
     ...data,
     userId: data.user_id,
@@ -60,6 +68,8 @@ export async function createOwnerProfile(profile: Partial<OwnerProfile>): Promis
 }
 
 export async function updateOwnerProfile(userId: string, updates: Partial<OwnerProfile>): Promise<OwnerProfile> {
+  console.log('Updating owner profile for user:', userId, 'with updates:', updates);
+  
   const updateData: any = {};
   
   if (updates.businessName !== undefined) updateData.business_name = updates.businessName;
@@ -72,6 +82,8 @@ export async function updateOwnerProfile(userId: string, updates: Partial<OwnerP
   if (updates.specialties !== undefined) updateData.specialties = updates.specialties;
   if (updates.yearsExperience !== undefined) updateData.years_experience = updates.yearsExperience;
 
+  console.log('Prepared update data:', updateData);
+
   const { data, error } = await supabase
     .from('owner_profiles')
     .update(updateData)
@@ -79,7 +91,13 @@ export async function updateOwnerProfile(userId: string, updates: Partial<OwnerP
     .select()
     .single();
 
-  if (error) throw error;
+  if (error) {
+    console.error('Error updating owner profile:', error);
+    throw error;
+  }
+  
+  console.log('Owner profile updated successfully:', data);
+  
   return {
     ...data,
     userId: data.user_id,
