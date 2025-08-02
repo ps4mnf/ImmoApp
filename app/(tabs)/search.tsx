@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { View, Text, TextInput, ScrollView, StyleSheet, Pressable, Platform } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Search as SearchIcon, SlidersHorizontal, MapPin, Filter } from 'lucide-react-native';
-import { PropertyCard } from '@/components/PropertyCard';
+import PropertyCard from '@/components/PropertyCard';
 
 const SAMPLE_PROPERTIES = [
   {
