@@ -12,9 +12,34 @@ export async function signUp(email: string, password: string, fullName: string) 
   });
 
   if (error) throw error;
+  
+  // Create user profile after successful signup
+  if (data.user) {
+    await createUserProfile(data.user.id, fullName, email);
+  }
+  
   return data;
 }
 
+async function createUserProfile(userId: string, fullName: string, email: string) {
+  try {
+    const { error } = await supabase
+      .from('users')
+      .insert({
+        id: userId,
+        full_name: fullName,
+        is_agent: false,
+        is_owner: false,
+      });
+    
+    if (error) {
+      console.error('Error creating user profile:', error);
+      // Don't throw here as the auth was successful
+    }
+  } catch (error) {
+    console.error('Failed to create user profile:', error);
+  }
+}
 export async function signIn(email: string, password: string) {
   const { data, error } = await supabase.auth.signInWithPassword({
     email,

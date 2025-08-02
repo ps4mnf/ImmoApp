@@ -21,15 +21,50 @@ export default function LoginScreen() {
 
     try {
       setLoading(true);
-      await signIn(email, password);
+      const { data } = await signIn(email, password);
+      
+      // Ensure user profile exists
+      if (data.user) {
+        await ensureUserProfile(data.user);
+      }
+      
       router.replace('/(tabs)');
     } catch (error) {
+      console.error('Login error:', error);
       Alert.alert('Login Failed', error instanceof Error ? error.message : 'Invalid credentials');
     } finally {
       setLoading(false);
     }
   };
 
+  const ensureUserProfile = async (user: any) => {
+    try {
+      // Check if user profile exists
+      const { data: existingProfile } = await supabase
+        .from('users')
+        .select('id')
+        .eq('id', user.id)
+        .single();
+      
+      // Create profile if it doesn't exist
+      if (!existingProfile) {
+        const { error } = await supabase
+          .from('users')
+          .insert({
+            id: user.id,
+            full_name: user.user_metadata?.full_name || 'User',
+            is_agent: false,
+            is_owner: false,
+          });
+        
+        if (error && error.code !== '23505') {
+          console.error('Error creating user profile on login:', error);
+        }
+      }
+    } catch (error) {
+      console.error('Failed to ensure user profile:', error);
+    }
+  };
 
   return (
     <View style={[styles.container, { paddingTop: insets.top }]}>
