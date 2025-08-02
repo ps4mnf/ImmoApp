@@ -14,6 +14,7 @@ const createMockClient = () => {
     eq: () => mockQuery,
     single: () => Promise.resolve({ data: null, error: null }),
     order: () => mockQuery,
+    limit: () => mockQuery,
     gte: () => mockQuery,
     lte: () => mockQuery,
     ilike: () => mockQuery,
