@@ -4,6 +4,7 @@ import { Link } from 'expo-router';
 import { Bed, Bath, Square, MapPin } from 'lucide-react-native';
 import type { Property } from '@/types';
 import PremiumBadge from './PremiumBadge';
+import { SHADOW } from '@/utils/constants';
 
 type PropertyCardProps = {
   property: Property;
@@ -70,15 +71,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     borderRadius: 16,
     overflow: 'hidden',
-    ...(Platform.OS === 'ios' && {
-      shadowColor: '#000',
-      shadowOffset: { width: 0, height: 4 },
-      shadowOpacity: 0.12,
-      shadowRadius: 8,
-    }),
-    ...(Platform.OS === 'android' && {
-      elevation: 8,
-    }),
+    ...SHADOW.medium,
     marginBottom: 20,
   },
   imageContainer: {

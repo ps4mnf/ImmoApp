@@ -3,6 +3,7 @@ import { View, StyleSheet, ScrollView, Dimensions, Pressable, Platform } from 'r
 import { Image } from 'expo-image';
 import { Link } from 'expo-router';
 import type { Property } from '@/types';
+import { SHADOW } from '@/utils/constants';
 
 type FeaturedCarouselProps = {
   properties: Property[];
@@ -76,15 +77,7 @@ const styles = StyleSheet.create({
     borderRadius: 16,
     overflow: 'hidden',
     backgroundColor: '#fff',
-    ...(Platform.OS === 'ios' && {
-      shadowColor: '#000',
-      shadowOffset: { width: 0, height: 4 },
-      shadowOpacity: 0.15,
-      shadowRadius: 12,
-    }),
-    ...(Platform.OS === 'android' && {
-      elevation: 8,
-    }),
+    ...SHADOW.large,
   },
   image: {
     width: '100%',
