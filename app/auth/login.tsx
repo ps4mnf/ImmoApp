@@ -4,6 +4,7 @@ import { Link, router } from 'expo-router';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Mail, Lock, Eye, EyeOff } from 'lucide-react-native';
 import { useAuth } from '@/hooks/useAuth';
+import { supabase } from '@/services/supabase';
 
 export default function LoginScreen() {
   const insets = useSafeAreaInsets();
@@ -21,12 +22,7 @@ export default function LoginScreen() {
 
     try {
       setLoading(true);
-      const { data } = await signIn(email, password);
-      
-      // Ensure user profile exists
-      if (data.user) {
-        await ensureUserProfile(data.user);
-      }
+      await signIn(email, password);
       
       router.replace('/(tabs)');
     } catch (error) {
@@ -34,35 +30,6 @@ export default function LoginScreen() {
       Alert.alert('Login Failed', error instanceof Error ? error.message : 'Invalid credentials');
     } finally {
       setLoading(false);
-    }
-  };
-
-  const ensureUserProfile = async (user: any) => {
-    try {
-      // Check if user profile exists
-      const { data: existingProfile } = await supabase
-        .from('users')
-        .select('id')
-        .eq('id', user.id)
-        .single();
-      
-      // Create profile if it doesn't exist
-      if (!existingProfile) {
-        const { error } = await supabase
-          .from('users')
-          .insert({
-            id: user.id,
-            full_name: user.user_metadata?.full_name || 'User',
-            is_agent: false,
-            is_owner: false,
-          });
-        
-        if (error && error.code !== '23505') {
-          console.error('Error creating user profile on login:', error);
-        }
-      }
-    } catch (error) {
-      console.error('Failed to ensure user profile:', error);
     }
   };
 

@@ -2,7 +2,7 @@ import { View, Text, StyleSheet, TextInput, Pressable, Alert } from 'react-nativ
 import { useState } from 'react';
 import { Link, router } from 'expo-router';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { Mail, Lock, User, Eye, EyeOff } from 'lucide-react-native';
+import { Mail, Lock, User, Eye, EyeOff, Phone, FileText } from 'lucide-react-native';
 import { useAuth } from '@/hooks/useAuth';
 
 export default function RegisterScreen() {
@@ -10,9 +10,13 @@ export default function RegisterScreen() {
   const { signUp } = useAuth();
   const [fullName, setFullName] = useState('');
   const [email, setEmail] = useState('');
+  const [phone, setPhone] = useState('');
+  const [bio, setBio] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
+  const [isAgent, setIsAgent] = useState(false);
+  const [isOwner, setIsOwner] = useState(false);
   const [loading, setLoading] = useState(false);
 
   const handleRegister = async () => {
@@ -33,7 +37,13 @@ export default function RegisterScreen() {
 
     try {
       setLoading(true);
-      await signUp(email, password, fullName);
+      await signUp(email, password, {
+        fullName,
+        phone,
+        bio,
+        isAgent,
+        isOwner,
+      });
       
       Alert.alert(
         'Success', 
@@ -95,6 +105,36 @@ export default function RegisterScreen() {
         </View>
 
         <View style={styles.inputGroup}>
+          <Text style={styles.label}>Phone Number</Text>
+          <View style={styles.inputContainer}>
+            <Phone size={20} color="#666" />
+            <TextInput
+              style={styles.input}
+              value={phone}
+              onChangeText={setPhone}
+              placeholder="Enter your phone number"
+              placeholderTextColor="#999"
+              keyboardType="phone-pad"
+            />
+          </View>
+        </View>
+
+        <View style={styles.inputGroup}>
+          <Text style={styles.label}>Bio</Text>
+          <View style={styles.inputContainer}>
+            <FileText size={20} color="#666" />
+            <TextInput
+              style={styles.input}
+              value={bio}
+              onChangeText={setBio}
+              placeholder="Tell us about yourself"
+              placeholderTextColor="#999"
+              multiline
+            />
+          </View>
+        </View>
+
+        <View style={styles.inputGroup}>
           <Text style={styles.label}>Password</Text>
           <View style={styles.inputContainer}>
             <Lock size={20} color="#666" />
@@ -128,6 +168,28 @@ export default function RegisterScreen() {
               placeholderTextColor="#999"
               secureTextEntry={!showPassword}
             />
+          </View>
+        </View>
+
+        <View style={styles.section}>
+          <Text style={styles.sectionTitle}>Account Type</Text>
+          <View style={styles.checkboxContainer}>
+            <Pressable
+              style={[styles.checkbox, isAgent && styles.checkboxSelected]}
+              onPress={() => setIsAgent(!isAgent)}
+            >
+              <Text style={[styles.checkboxText, isAgent && styles.checkboxTextSelected]}>
+                I am a real estate agent
+              </Text>
+            </Pressable>
+            <Pressable
+              style={[styles.checkbox, isOwner && styles.checkboxSelected]}
+              onPress={() => setIsOwner(!isOwner)}
+            >
+              <Text style={[styles.checkboxText, isOwner && styles.checkboxTextSelected]}>
+                I am a property owner
+              </Text>
+            </Pressable>
           </View>
         </View>
 
@@ -202,6 +264,38 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontFamily: 'Inter-Regular',
     color: '#1a1a1a',
+  },
+  section: {
+    marginBottom: 20,
+  },
+  sectionTitle: {
+    fontSize: 16,
+    fontFamily: 'Inter-SemiBold',
+    color: '#1a1a1a',
+    marginBottom: 12,
+  },
+  checkboxContainer: {
+    gap: 12,
+  },
+  checkbox: {
+    backgroundColor: '#f8fafc',
+    borderWidth: 1,
+    borderColor: '#e5e7eb',
+    borderRadius: 12,
+    padding: 16,
+  },
+  checkboxSelected: {
+    backgroundColor: '#eff6ff',
+    borderColor: '#2563eb',
+  },
+  checkboxText: {
+    fontSize: 16,
+    fontFamily: 'Inter-Regular',
+    color: '#666',
+  },
+  checkboxTextSelected: {
+    color: '#2563eb',
+    fontFamily: 'Inter-SemiBold',
   },
   registerButton: {
     backgroundColor: '#2563eb',

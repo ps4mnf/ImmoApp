@@ -6,18 +6,35 @@ import FeaturedCarousel from '@/components/FeaturedCarousel';
 import PropertyCard from '@/components/PropertyCard';
 import { getFeaturedProperties } from '@/services/owners';
 import { getProperties } from '@/services/properties';
+import { useAuth } from '@/hooks/useAuth';
+import { getUserProfile } from '@/services/users';
 
 export default function HomeScreen() {
   const insets = useSafeAreaInsets();
+  const { user } = useAuth();
   const [refreshing, setRefreshing] = useState(false);
   const [featuredProperties, setFeaturedProperties] = useState<any[]>([]);
   const [recentProperties, setRecentProperties] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
+  const [userProfile, setUserProfile] = useState<any>(null);
 
   useEffect(() => {
     fetchData();
+    if (user) {
+      fetchUserProfile();
+    }
   }, []);
 
+  const fetchUserProfile = async () => {
+    if (!user) return;
+    
+    try {
+      const profile = await getUserProfile(user.id);
+      setUserProfile(profile);
+    } catch (error) {
+      console.error('Failed to fetch user profile:', error);
+    }
+  };
   const fetchData = async () => {
     try {
       setLoading(true);
@@ -96,8 +113,10 @@ export default function HomeScreen() {
       }
     >
       <View style={styles.header}>
-        <Text style={styles.title}>Discover Your Dream Home</Text>
-        <Text style={styles.subtitle}>Premium properties curated just for you</Text>
+        <Text style={styles.title}>
+          Welcome{userProfile?.fullName ? `, ${userProfile.fullName}` : ''}!
+        </Text>
+        <Text style={styles.subtitle}>Discover your dream home</Text>
       </View>
 
       {!loading && featuredProperties.length > 0 && (

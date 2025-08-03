@@ -1,12 +1,19 @@
 import { supabase } from './supabase';
+import { createUserProfile } from './users';
 
-export async function signUp(email: string, password: string, fullName: string) {
+export async function signUp(email: string, password: string, profileData: {
+  fullName: string;
+  phone?: string;
+  bio?: string;
+  isAgent?: boolean;
+  isOwner?: boolean;
+}) {
   const { data, error } = await supabase.auth.signUp({
     email,
     password,
     options: {
       data: {
-        full_name: fullName,
+        full_name: profileData.fullName,
       },
     },
   });
@@ -15,31 +22,19 @@ export async function signUp(email: string, password: string, fullName: string) 
   
   // Create user profile after successful signup
   if (data.user) {
-    await createUserProfile(data.user.id, fullName, email);
+    await createUserProfile({
+      id: data.user.id,
+      fullName: profileData.fullName,
+      phone: profileData.phone,
+      bio: profileData.bio,
+      isAgent: profileData.isAgent || false,
+      isOwner: profileData.isOwner || false,
+    });
   }
   
   return data;
 }
 
-async function createUserProfile(userId: string, fullName: string, email: string) {
-  try {
-    const { error } = await supabase
-      .from('users')
-      .insert({
-        id: userId,
-        full_name: fullName,
-        is_agent: false,
-        is_owner: false,
-      });
-    
-    if (error) {
-      console.error('Error creating user profile:', error);
-      // Don't throw here as the auth was successful
-    }
-  } catch (error) {
-    console.error('Failed to create user profile:', error);
-  }
-}
 export async function signIn(email: string, password: string) {
   const { data, error } = await supabase.auth.signInWithPassword({
     email,

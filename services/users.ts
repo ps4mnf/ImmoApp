@@ -39,7 +39,8 @@ export async function getUserProfile(userId: string): Promise<UserProfile | null
 export async function createUserProfile(profile: {
   id: string;
   fullName: string;
-  email?: string;
+  phone?: string;
+  bio?: string;
   isAgent?: boolean;
   isOwner?: boolean;
 }): Promise<UserProfile> {
@@ -48,6 +49,8 @@ export async function createUserProfile(profile: {
     .insert({
       id: profile.id,
       full_name: profile.fullName,
+      phone: profile.phone,
+      bio: profile.bio,
       is_agent: profile.isAgent || false,
       is_owner: profile.isOwner || false,
     })

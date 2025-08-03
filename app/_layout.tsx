@@ -8,12 +8,14 @@ import { useFonts, Inter_400Regular, Inter_600SemiBold, Inter_700Bold } from '@e
 import * as SplashScreen from 'expo-splash-screen';
 import ErrorBoundary from '@/components/ErrorBoundary';
 import { initializeSupabase } from '@/utils/supabaseUtils';
+import { useAuth } from '@/hooks/useAuth';
 
 // Prevent the splash screen from auto-hiding before asset loading is complete
 SplashScreen.preventAutoHideAsync();
 
 export default function RootLayout() {
   useFrameworkReady();
+  const { session, loading } = useAuth();
 
   const [fontsLoaded, fontError] = useFonts({
     'Inter-Regular': Inter_400Regular,
@@ -30,15 +32,22 @@ export default function RootLayout() {
   useEffect(() => {
     initializeSupabase();
   }, []);
+  
   if (!fontsLoaded && !fontError) {
     return null;
   }
 
+  if (loading) {
+    return null;
+  }
   return (
     <ErrorBoundary>
       <Stack screenOptions={{ headerShown: false }}>
-        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-        <Stack.Screen name="auth" options={{ headerShown: false }} />
+        {session ? (
+          <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+        ) : (
+          <Stack.Screen name="auth" options={{ headerShown: false }} />
+        )}
         <Stack.Screen name="property/[id]" options={{ 
           headerShown: true, 
           title: 'Property Details',
