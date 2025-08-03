@@ -89,6 +89,8 @@ export default function OwnerDashboard() {
   useEffect(() => {
     if (user) {
       fetchPropertyCount();
+    } else {
+      setPropertyCount(0);
     }
   }, [user]);
 
@@ -102,6 +104,7 @@ export default function OwnerDashboard() {
       }
     } catch (error) {
       console.error('Failed to fetch property count:', error);
+      setPropertyCount(0);
     }
   };
 

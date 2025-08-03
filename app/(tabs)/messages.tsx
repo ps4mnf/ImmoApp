@@ -17,6 +17,8 @@ export default function MessagesScreen() {
   useEffect(() => {
     if (user) {
       fetchConversations();
+    } else {
+      setLoading(false);
     }
   }, [user]);
 
@@ -29,6 +31,8 @@ export default function MessagesScreen() {
       setConversations(data);
     } catch (error) {
       console.error('Failed to fetch conversations:', error);
+      // Set empty array on error to show empty state
+      setConversations([]);
     } finally {
       setLoading(false);
     }
@@ -66,11 +70,7 @@ export default function MessagesScreen() {
       </View>
 
       <ScrollView style={styles.messagesList}>
-        {loading ? (
-          <View style={styles.loadingContainer}>
-            <Text style={styles.loadingText}>Loading conversations...</Text>
-          </View>
-        ) : conversations.map((conversation) => (
+        {conversations.map((conversation) => (
           <Pressable key={conversation.id} style={styles.messageItem}>
             <Image 
               source={{ 
@@ -107,6 +107,12 @@ export default function MessagesScreen() {
           <Text style={styles.emptyStateSubtitle}>
             Start conversations with property owners and agents
           </Text>
+        </View>
+      )}
+
+      {loading && (
+        <View style={styles.loadingContainer}>
+          <Text style={styles.loadingText}>Loading conversations...</Text>
         </View>
       )}
     </View>

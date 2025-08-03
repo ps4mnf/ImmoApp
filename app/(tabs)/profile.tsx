@@ -58,6 +58,8 @@ export default function ProfileScreen() {
   useEffect(() => {
     if (user) {
       fetchUserProfile();
+    } else {
+      setLoading(false);
     }
   }, [user]);
 
@@ -69,6 +71,8 @@ export default function ProfileScreen() {
       setUserProfile(profile);
     } catch (error) {
       console.error('Failed to fetch user profile:', error);
+      // Continue with null profile to show basic user info
+      setUserProfile(null);
     } finally {
       setLoading(false);
     }
@@ -85,8 +89,19 @@ export default function ProfileScreen() {
   if (loading) {
     return (
       <View style={[styles.container, { paddingTop: insets.top }]}>
-        <View style={styles.loadingContainer}>
-          <Text style={styles.loadingText}>Loading profile...</Text>
+        <View style={styles.header}>
+          <View style={styles.profileInfo}>
+            <Image
+              source={{ 
+                uri: user?.user_metadata?.avatar_url || 'https://images.pexels.com/photos/614810/pexels-photo-614810.jpeg'
+              }}
+              style={styles.avatar}
+            />
+            <View style={styles.nameContainer}>
+              <Text style={styles.name}>Loading...</Text>
+              <Text style={styles.email}>{user?.email || 'Loading...'}</Text>
+            </View>
+          </View>
         </View>
       </View>
     );
