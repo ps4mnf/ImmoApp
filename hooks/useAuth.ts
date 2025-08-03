@@ -44,7 +44,6 @@ export function useAuth() {
     });
 
     
-    return data;
   };
   };
   const signOut = async () => {
