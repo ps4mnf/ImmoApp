@@ -67,7 +67,8 @@ A modern real estate application built with Expo Router and Supabase, featuring 
 3. Set up Supabase:
    - Create a new project at [supabase.com](https://supabase.com)
    - Copy your project URL and anon key
-   - The database schema will be automatically created using the migration files
+   - Click the "Connect to Supabase" button in Bolt to set up the database
+   - Or manually run the migration files in your Supabase SQL editor
 
 4. Create a `.env` file in the root directory:
    ```
@@ -75,9 +76,36 @@ A modern real estate application built with Expo Router and Supabase, featuring 
    EXPO_PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key
    ```
 
+   **Important**: Replace the placeholder values with your actual Supabase credentials:
+   - Go to your Supabase dashboard
+   - Navigate to Settings > API
+   - Copy the Project URL and anon/public key
+   - Update the `.env` file with these values
+
 5. Start the development server:
    ```bash
    npm run dev
+   ```
+
+### Mobile App Setup
+
+To test on your mobile device:
+
+1. **Install Expo Go** on your phone from the App Store or Google Play
+
+2. **For Development Testing:**
+   - Make sure your phone and computer are on the same WiFi network
+   - Scan the QR code with Expo Go (Android) or Camera app (iOS)
+   - The app should open in Expo Go
+
+3. **If QR code scanning doesn't work:**
+   - Try using the tunnel connection: `npx expo start --tunnel`
+   - Or manually enter the URL shown in the terminal into Expo Go
+
+4. **For Production Builds:**
+   ```bash
+   npx expo install --fix
+   npx eas build --platform android --profile preview
    ```
 
 ### Deployment

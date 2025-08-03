@@ -40,6 +40,8 @@ export function useAuth() {
     isAgent?: boolean;
     isOwner?: boolean;
   }) => {
+    console.log('useAuth: Starting signup process for:', email);
+    
     const { data, error } = await supabase.auth.signUp({
       email,
       password,
@@ -51,9 +53,15 @@ export function useAuth() {
     });
 
     if (error) throw error;
+      console.error('Supabase auth signup error:', error);
+    }
+    
+    console.log('Supabase auth signup successful:', data);
     
     // Create user profile in our custom users table
     if (data.user) {
+      console.log('Creating user profile for:', data.user.id);
+      
       await createUserProfile({
         id: data.user.id,
         fullName: profileData.fullName,
@@ -62,6 +70,8 @@ export function useAuth() {
         isAgent: profileData.isAgent || false,
         isOwner: profileData.isOwner || false,
       });
+      
+      console.log('User profile created successfully');
     }
     
     return data;

@@ -37,6 +37,8 @@ export default function RegisterScreen() {
 
     try {
       setLoading(true);
+      console.log('Starting registration process...');
+      
       await signUp(email, password, {
         fullName,
         phone,
@@ -45,6 +47,7 @@ export default function RegisterScreen() {
         isOwner,
       });
       
+      console.log('Registration successful');
       Alert.alert(
         'Success', 
         'Account created successfully! You can now sign in.',
@@ -59,7 +62,7 @@ export default function RegisterScreen() {
       console.error('Registration error:', error);
       Alert.alert(
         'Registration Failed', 
-        error instanceof Error ? error.message : 'Please try again'
+        error instanceof Error ? error.message : 'Please check your internet connection and try again'
       );
     } finally {
       setLoading(false);

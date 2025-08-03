@@ -44,6 +44,8 @@ export async function createUserProfile(profile: {
   isAgent?: boolean;
   isOwner?: boolean;
 }): Promise<UserProfile> {
+  console.log('Creating user profile in database:', profile);
+  
   const { data, error } = await supabase
     .from('users')
     .insert({
@@ -57,7 +59,12 @@ export async function createUserProfile(profile: {
     .select()
     .single();
 
-  if (error) throw error;
+  if (error) {
+    console.error('Database error creating user profile:', error);
+    throw error;
+  }
+  
+  console.log('User profile created in database:', data);
   
   return {
     id: data.id,

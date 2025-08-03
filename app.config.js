@@ -10,6 +10,7 @@ export default {
     scheme: 'realestateapp',
     userInterfaceStyle: 'automatic',
     newArchEnabled: true,
+    owner: 'your-expo-username',
     splash: {
       image: './assets/images/icon.png',
       resizeMode: 'contain',
@@ -20,7 +21,15 @@ export default {
     ],
     ios: {
       supportsTablet: true,
-      bundleIdentifier: IS_DEV ? 'com.realestateapp.mobile.dev' : 'com.realestateapp.mobile'
+      bundleIdentifier: IS_DEV ? 'com.realestateapp.mobile.dev' : 'com.realestateapp.mobile',
+      infoPlist: {
+        CFBundleURLTypes: [
+          {
+            CFBundleURLName: 'realestateapp',
+            CFBundleURLSchemes: ['realestateapp']
+          }
+        ]
+      }
     },
     android: {
       adaptiveIcon: {
@@ -28,6 +37,19 @@ export default {
         backgroundColor: '#ffffff'
       },
       package: IS_DEV ? 'com.realestateapp.mobile.dev' : 'com.realestateapp.mobile',
+      intentFilters: [
+        {
+          action: 'VIEW',
+          autoVerify: true,
+          data: [
+            {
+              scheme: 'https',
+              host: '*.realestateapp.com'
+            }
+          ],
+          category: ['BROWSABLE', 'DEFAULT']
+        }
+      ],
       permissions: [
         'android.permission.CAMERA',
         'android.permission.RECORD_AUDIO',
@@ -39,11 +61,16 @@ export default {
     },
     web: {
       bundler: 'metro',
-      output: 'single',
+      output: 'server',
       favicon: './assets/images/favicon.png'
     },
     plugins: [
-      'expo-router',
+      [
+        'expo-router',
+        {
+          origin: false
+        }
+      ],
       'expo-font',
       [
         'expo-camera',

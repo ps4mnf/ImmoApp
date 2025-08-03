@@ -2,8 +2,16 @@ import { supabase } from '@/services/supabase';
 
 export async function checkSupabaseConnection(): Promise<boolean> {
   try {
+    console.log('Checking Supabase connection...');
     const { data, error } = await supabase.from('users').select('count').limit(1);
-    return !error;
+    
+    if (error) {
+      console.error('Supabase connection error:', error);
+      return false;
+    }
+    
+    console.log('Supabase connection successful');
+    return true;
   } catch (error) {
     console.error('Supabase connection failed:', error);
     return false;
@@ -12,11 +20,13 @@ export async function checkSupabaseConnection(): Promise<boolean> {
 
 export async function initializeSupabase(): Promise<void> {
   try {
+    console.log('Initializing Supabase...');
+    
     // Check if we can connect to Supabase
     const isConnected = await checkSupabaseConnection();
     
     if (!isConnected) {
-      console.warn('Supabase connection failed. Using offline mode.');
+      console.warn('Supabase connection failed. Please check your environment variables and internet connection.');
       return;
     }
     
