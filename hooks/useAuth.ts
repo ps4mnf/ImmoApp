@@ -52,8 +52,9 @@ export function useAuth() {
       },
     });
 
-    if (error) throw error;
+    if (error) {
       console.error('Supabase auth signup error:', error);
+      throw error;
     }
     
     console.log('Supabase auth signup successful:', data);
