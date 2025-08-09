@@ -19,18 +19,6 @@ export default {
     assetBundlePatterns: [
       '**/*'
     ],
-    ios: {
-      supportsTablet: true,
-      bundleIdentifier: IS_DEV ? 'com.realestateapp.mobile.dev' : 'com.realestateapp.mobile',
-      infoPlist: {
-        CFBundleURLTypes: [
-          {
-            CFBundleURLName: 'realestateapp',
-            CFBundleURLSchemes: ['realestateapp']
-          }
-        ]
-      }
-    },
     android: {
       adaptiveIcon: {
         foregroundImage: './assets/images/icon.png',
@@ -56,7 +44,9 @@ export default {
         'android.permission.ACCESS_FINE_LOCATION',
         'android.permission.ACCESS_COARSE_LOCATION',
         'android.permission.READ_EXTERNAL_STORAGE',
-        'android.permission.WRITE_EXTERNAL_STORAGE'
+        'android.permission.WRITE_EXTERNAL_STORAGE',
+        'android.permission.INTERNET',
+        'android.permission.ACCESS_NETWORK_STATE'
       ]
     },
     web: {

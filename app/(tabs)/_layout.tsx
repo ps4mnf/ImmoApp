@@ -12,8 +12,8 @@ export default function TabLayout() {
           backgroundColor: '#ffffff',
           borderTopWidth: 1,
           borderTopColor: '#e5e7eb',
-          height: Platform.OS === 'android' ? 60 : 80,
-          paddingBottom: Platform.OS === 'android' ? 8 : 20,
+          height: 60,
+          paddingBottom: 8,
           paddingTop: 8,
         },
         tabBarLabelStyle: {

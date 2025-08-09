@@ -89,13 +89,13 @@ A modern real estate application built with Expo Router and Supabase, featuring 
 
 ### Mobile App Setup
 
-To test on your mobile device:
+To test on your Android device:
 
-1. **Install Expo Go** on your phone from the App Store or Google Play
+1. **Install Expo Go** on your Android device from Google Play Store
 
 2. **For Development Testing:**
-   - Make sure your phone and computer are on the same WiFi network
-   - Scan the QR code with Expo Go (Android) or Camera app (iOS)
+   - Make sure your Android device and computer are on the same WiFi network
+   - Scan the QR code with Expo Go
    - The app should open in Expo Go
 
 3. **If QR code scanning doesn't work:**
@@ -110,7 +110,7 @@ To test on your mobile device:
 
 ### Deployment
 
-To deploy this app to your phone:
+To deploy this app to your Android device:
 
 1. **For Development Testing:**
    ```bash
@@ -121,11 +121,10 @@ To deploy this app to your phone:
 2. **For Production:**
    ```bash
    npx eas build --platform android --profile production
-   npx eas build --platform ios --profile production
    ```
 
 3. **Install on Device:**
-   - Download the APK (Android) or install via TestFlight (iOS)
+   - Download and install the APK file
    - Or use Expo Go for development builds
 
 ## Project Structure
@@ -149,9 +148,8 @@ real-estate-app/
 
 ### Running the App
 
-- Web: `npm run web`
-- iOS: `npm run ios`
 - Android: `npm run android`
+- Web: `npm run web`
 
 ### Environment Variables
 

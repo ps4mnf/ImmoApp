@@ -70,10 +70,7 @@ export default function RegisterScreen() {
   };
 
   return (
-    <KeyboardAvoidingView 
-      style={[styles.container, { paddingTop: insets.top }]}
-      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-    >
+    <View style={[styles.container, { paddingTop: insets.top }]}>
       <ScrollView 
         style={styles.scrollView}
         contentContainerStyle={styles.scrollContent}
@@ -227,7 +224,7 @@ export default function RegisterScreen() {
           </View>
         </View>
       </ScrollView>
-    </KeyboardAvoidingView>
+    </View>
   );
 }
 

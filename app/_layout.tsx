@@ -56,7 +56,7 @@ export default function RootLayout() {
         <Stack.Screen name="owner" options={{ headerShown: false }} />
         <Stack.Screen name="+not-found" />
       </Stack>
-      <StatusBar style={Platform.OS === 'ios' ? 'auto' : 'dark'} />
+      <StatusBar style="dark" />
     </ErrorBoundary>
   );
 }
